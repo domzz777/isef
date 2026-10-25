@@ -1,26 +1,39 @@
-# Medical QR Safety Bracelet — Prototype
+# Medical QR Safety Bracelet
 
-## Files
-- `index.html`: dashboard, profile form, profile list and QR generator.
-- `public.html`: public emergency profile reached by QR.
-- `style.css`: responsive Arabic RTL styling.
-- `app.js`: dashboard and local demo data.
-- `public.js`: public profile renderer.
+نموذج أولي لإدارة ملفات طوارئ باستخدام Node.js وSQLite. البيانات العامة فقط تظهر في صفحة QR، بينما `privateNotes` تبقى داخل لوحة الإدارة.
 
-## Run
-1. Extract the ZIP.
-2. Open the folder in VS Code.
-3. If you have the Live Server extension, right-click `index.html` and choose **Open with Live Server**.
-4. Create a profile using fake data, open its QR preview, and test the public page on the same browser/device.
+## تشغيل محلي
 
-You can also use a local static server. A QR URL using `localhost` or `file://` will not work on another person's phone.
+1. ثبّت Node.js 22.13 أو أحدث.
+2. من PowerShell داخل مجلد المشروع عيّن بيانات دخول الإدارة وشغّل الخادم:
 
-## Important limitations
-This is a front-end prototype, not a production medical system:
-- Data is stored in browser `localStorage`; it is not synchronized between devices.
-- There is no real login, server, database, access control, encryption at rest, audit log, or account recovery.
-- Private notes are hidden from the public page only by the UI. Anyone with browser access can inspect local storage.
-- Do not enter real personal, health, insurance, or children's information.
-- QR generation loads QRCode.js from a CDN, so internet access is required for that feature.
-- Before real-world use, build a backend with authentication, HTTPS, random revocable QR tokens, strict access controls, data minimization, consent/guardian controls, backups, and security testing. Avoid exposing full medical history publicly.
-- A QR bracelet is not a substitute for emergency services or verified medical records.
+```powershell
+$env:ADMIN_USER = "admin"
+$env:ADMIN_PASSWORD = "اكتب-كلمة-مرور-قوية-هنا"
+node server.js
+```
+
+3. افتح `http://localhost:3000`. أول طلب للوحة الإدارة سيطلب اسم المستخدم وكلمة المرور.
+
+قاعدة البيانات تنشأ تلقائيًا في `data/medical-qr.sqlite`. لا توجد حزم خارجية مطلوبة. لإيقاف الخادم اضغط `Ctrl+C`.
+
+## النشر على Render
+
+يوجد ملف `render.yaml` لإعداد خدمة Node.js وقاعدة بيانات SQLite على قرص دائم. من مستودع GitHub اختر **New > Blueprint**, ثم اربط المستودع/الفرع الذي يحتوي الملفات. عند الطلب، أدخل `ADMIN_USER` وكلمة مرور قوية في `ADMIN_PASSWORD`. افتح رابط `onrender.com` بعد اكتمال النشر؛ الخدمة نفسها تقدم لوحة الإدارة وصفحة QR.
+
+الإعداد يطلب خطة Render مدفوعة لأن SQLite تحتاج قرصًا دائمًا؛ نظام الملفات العادي للخدمة مؤقت. لا ترفع مجلد `data` أو كلمات المرور إلى GitHub. رمز QR سيستخدم نطاق Render العام.
+
+## قاعدة البيانات والخصوصية
+
+- قاعدة البيانات المحلية: `data/medical-qr.sqlite`، مستبعدة من Git عبر `.gitignore`.
+- خادم API يحمي عمليات الإدارة ببيانات دخول `ADMIN_USER` و`ADMIN_PASSWORD`.
+- صفحة الطوارئ عامة لمن يملك رمز QR؛ إصدار رمز جديد يبطل القديم.
+- لا تدخل بيانات صحية أو شخصية حقيقية في هذا النموذج. كلمة المرور لا تحول النظام إلى سجل طبي معتمد؛ الاستخدام الواقعي يتطلب مراجعة أمنية وقانونية، وإجراءات خصوصية وموافقة مناسبة.
+
+## ملفات المشروع
+
+- `server.js`: API وSQLite وخدمة صفحات الموقع.
+- `app.js`, `index.html`: لوحة الإدارة.
+- `public.js`, `public.html`: صفحة الطوارئ العامة.
+- `style.css`: التنسيق.
+- `render.yaml`: إعداد النشر على Render.

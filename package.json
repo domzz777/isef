@@ -1,0 +1,12 @@
+{
+  "name": "medical-qr-safety-bracelet",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Medical QR safety bracelet prototype with a SQLite API",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
