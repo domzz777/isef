@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <title>Medical QR | لوحة إدارة السوار الطبي</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">+</span><span>MEDICAL <b>QR</b><small>SAFETY BRACELET</small></span></a>
+    <span class="prototype-tag">نسخة تجريبية</span>
+  </header>
+
+  <main class="shell">
+    <section id="dashboardView">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">منصة السوار الطبي الذكي</p>
+          <h1>معلومات مهمة، وقت ما تكون مهمة.</h1>
+          <p class="hero-copy">أنشئ ملف طوارئ لكل سوار، وولّد QR يفتح صفحة معلومات الطوارئ.</p>
+        </div>
+        <div class="hero-symbol" aria-hidden="true">✚</div>
+      </div>
+
+      <div class="notice"><strong>تنبيه:</strong> دي نسخة واجهة تجريبية. البيانات بتتخزن في المتصفح فقط، من غير تسجيل دخول حقيقي أو حماية مناسبة للبيانات الطبية. استخدم بيانات وهمية أثناء التجربة.</div>
+
+      <div class="section-heading">
+        <div><p class="eyebrow">الإدارة</p><h2>ملفات السوار</h2></div>
+        <button class="button primary" id="newProfileBtn">＋ إضافة ملف جديد</button>
+      </div>
+
+      <div class="stats">
+        <article class="stat-card"><span class="stat-icon">▣</span><span class="stat-label">إجمالي الملفات</span><strong id="profileCount">0</strong></article>
+        <article class="stat-card"><span class="stat-icon">♡</span><span class="stat-label">ملفات طوارئ</span><strong id="emergencyCount">0</strong></article>
+        <article class="stat-card"><span class="stat-icon">⌁</span><span class="stat-label">QR متاح</span><strong id="qrCount">0</strong></article>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head"><div><h3>قائمة الملفات</h3><p>اضغط على ملف لمعاينته أو تعديله.</p></div><input id="searchInput" class="search" placeholder="ابحث بالاسم..." aria-label="ابحث بالاسم"></div>
+        <div id="profilesList" class="profiles-list"></div>
+        <div id="emptyState" class="empty-state"><div class="empty-icon">▤</div><h3>لسه مفيش ملفات</h3><p>ابدأ بإنشاء ملف تجريبي، وبعدها تقدر تعرض صفحة الطوارئ وتولّد QR.</p><button class="button primary" id="emptyCreateBtn">إنشاء أول ملف</button></div>
+      </section>
+    </section>
+
+    <section id="editorView" class="hidden">
+      <div class="page-title"><button class="button ghost" id="backBtn">← رجوع</button><div><p class="eyebrow">إدارة الملف</p><h1 id="editorTitle">إضافة ملف جديد</h1></div></div>
+      <form id="profileForm" class="panel form-panel">
+        <input type="hidden" id="profileId">
+        <div class="form-section"><h3>بيانات أساسية</h3><div class="form-grid">
+          <label>الاسم الكامل *<input id="fullName" required maxlength="100" placeholder="الاسم كما تريد ظهوره"></label>
+          <label>السن<input id="age" type="number" min="0" max="125" placeholder="مثال: 16"></label>
+          <label>فصيلة الدم <select id="bloodType"><option value="">غير معروف</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></label>
+          <label>نوع الحالة <select id="caseType"><option>عام</option><option>طفل معرض للتوهان</option><option>كبير سن</option><option>حساسية شديدة</option><option>مرض مزمن</option><option>حالة معرضة لفقدان الوعي</option><option>أخرى</option></select></label>
+        </div></div>
+        <div class="form-section"><h3>جهة اتصال الطوارئ</h3><div class="form-grid">
+          <label>اسم جهة الاتصال<input id="contactName" maxlength="100" placeholder="ولي أمر / قريب"></label>
+          <label>رقم الهاتف *<input id="contactPhone" type="tel" required maxlength="30" placeholder="+20 1xxxxxxxxx"></label>
+          <label>العلاقة<input id="contactRelation" maxlength="60" placeholder="مثال: الأم"></label>
+          <label>لغة التواصل<select id="language"><option value="ar">العربية</option><option value="en">English</option></select></label>
+        </div></div>
+        <div class="form-section"><h3>معلومات طبية للطوارئ</h3><p class="field-note">اكتب أقل قدر لازم من المعلومات. تجنب التفاصيل غير الضرورية.</p><div class="form-grid">
+          <label class="full">الحساسية المهمة<input id="allergies" maxlength="300" placeholder="مثال: حساسية شديدة من البنسلين، أو لا توجد حساسية معروفة"></label>
+          <label class="full">أمراض أو حالات مهمة للطوارئ<input id="conditions" maxlength="400" placeholder="معلومات مختصرة ومؤكدة"></label>
+          <label class="full">تعليمات مختصرة للمُسعف<textarea id="instructions" maxlength="400" rows="3" placeholder="مثال: يرجى التواصل مع جهة الطوارئ المذكورة"></textarea></label>
+        </div></div>
+        <div class="form-section"><h3>التأمين الصحي (اختياري)</h3><div class="form-grid">
+          <label>اسم جهة التأمين<input id="insuranceName" maxlength="120" placeholder="اسم الجهة"></label>
+          <label>رقم التواصل العام<input id="insurancePhone" type="tel" maxlength="30" placeholder="رقم خدمة العملاء"></label>
+          <label class="full">عنوان الفرع أو الجهة<input id="insuranceAddress" maxlength="250" placeholder="العنوان أو أقرب فرع"></label>
+        </div></div>
+        <div class="form-section sensitive-section"><h3>تفاصيل حساسة محمية داخل النموذج التجريبي</h3><p class="field-note">هذه الحقول لا تظهر في صفحة QR العامة. لكنها ليست محمية تشفيرًا في هذه النسخة، فلا تدخل بيانات حقيقية.</p><div class="form-grid">
+          <label class="full">تفاصيل طبية إضافية<textarea id="privateNotes" rows="3" maxlength="1000" placeholder="للتجربة ببيانات وهمية فقط"></textarea></label>
+          <label class="full check-label"><input id="activeProfile" type="checkbox" checked> تفعيل صفحة الطوارئ لهذا الملف</label>
+        </div></div>
+        <div class="form-actions"><button type="button" class="button ghost" id="cancelBtn">إلغاء</button><button type="submit" class="button primary">حفظ الملف</button></div>
+        <p id="formMessage" class="form-message" role="status"></p>
+      </form>
+    </section>
+
+    <section id="detailView" class="hidden">
+      <div class="page-title"><button class="button ghost" id="detailBackBtn">← لوحة الإدارة</button><div><p class="eyebrow">معاينة الملف</p><h1>السوار وصفحة الطوارئ</h1></div></div>
+      <div class="detail-grid">
+        <section class="panel"><div class="panel-head"><div><h3 id="detailName">اسم الشخص</h3><p id="detailMeta"></p></div><span class="status-pill" id="detailStatus">نشط</span></div>
+          <div class="detail-actions"><button class="button primary" id="openPublicBtn">عرض صفحة QR العامة</button><button class="button secondary" id="editProfileBtn">تعديل البيانات</button><button class="button danger-outline" id="deleteProfileBtn">حذف الملف</button></div>
+          <div class="qr-area"><div id="qrcode" class="qr-box"></div><div><h4>QR Code للسوار</h4><p class="field-note">للاستخدام الحقيقي، لازم ترفع الموقع على استضافة HTTPS. رابط localhost أو file:// مش هيفتح عند شخص تاني.</p><button class="button secondary" id="downloadQrBtn">تنزيل QR كصورة</button><p id="qrUrl" class="url-text"></p></div></div>
+        </section>
+        <section class="panel"><h3>ملخص البيانات العامة</h3><div id="detailSummary" class="summary-list"></div></section>
+      </div>
+    </section>
+    <footer>MEDICAL QR <span>•</span> نموذج أولي للتطوير والاختبار، وليس نظامًا طبيًا معتمدًا.</footer>
+  </main>
+</body>
+</html>
