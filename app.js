@@ -1,20 +1,36 @@
 (() => {
-  const STORAGE_KEY = "medicalQrPrototypeProfilesV1";
   const $ = (id) => document.getElementById(id);
   const fields = ["fullName","age","bloodType","caseType","contactName","contactPhone","contactRelation","language","allergies","conditions","instructions","insuranceName","insurancePhone","insuranceAddress","privateNotes"];
   let currentId = null;
   let selectedProfile = null;
+  let profiles = [];
+  let adminAuth = sessionStorage.getItem("medicalQrAdminAuth") || "";
 
-  function readProfiles(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { return []; } }
-  function writeProfiles(items){ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
+  async function api(path, options = {}) {
+    let response = await fetch(path, { ...options, headers: { ...(options.body ? {"Content-Type":"application/json"} : {}), ...(adminAuth ? {"Authorization":"Basic " + adminAuth} : {}), ...(options.headers || {}) } });
+    if (response.status === 401) {
+      const username = window.prompt("اسم مستخدم لوحة الإدارة");
+      if (username === null) throw new Error("يلزم تسجيل الدخول لإدارة الملفات.");
+      const password = window.prompt("كلمة مرور لوحة الإدارة");
+      if (password === null) throw new Error("يلزم تسجيل الدخول لإدارة الملفات.");
+      adminAuth = btoa(unescape(encodeURIComponent(username + ":" + password)));
+      sessionStorage.setItem("medicalQrAdminAuth", adminAuth);
+      response = await fetch(path, { ...options, headers: { ...(options.body ? {"Content-Type":"application/json"} : {}), "Authorization":"Basic " + adminAuth, ...(options.headers || {}) } });
+    }
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "تعذر الاتصال بالخادم.");
+    return data;
+  }
+  function readableError(error){
+    if (error instanceof TypeError && /fetch/i.test(error.message)) return "الخادم غير متصل. شغّل node server.js من مجلد المشروع، ثم افتح http://localhost:3000/dashboard.html بدل فتح ملف HTML مباشرة.";
+    return error.message || "حدث خطأ غير متوقع.";
+  }
   function safe(value){ return String(value ?? "").trim(); }
   function escapeHtml(value){ return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
-  function newId(){ return (crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2)); }
   function show(view){ ["dashboardView","editorView","detailView"].forEach(id => $(id).classList.toggle("hidden", id !== view)); window.scrollTo({top:0,behavior:"smooth"}); }
-  function publicUrl(id){ return new URL("public.html?id=" + encodeURIComponent(id), window.location.href).href; }
+  function publicUrl(token){ return new URL("public.html?token=" + encodeURIComponent(token), window.location.href).href; }
 
   function renderList(){
-    const profiles = readProfiles();
     const term = safe($("searchInput").value).toLowerCase();
     const filtered = profiles.filter(p => safe(p.fullName).toLowerCase().includes(term));
     $("profileCount").textContent = profiles.length;
@@ -33,7 +49,6 @@
     document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => openDetail(b.dataset.view)));
     document.querySelectorAll("[data-edit]").forEach(b => b.addEventListener("click", () => editProfile(b.dataset.edit)));
   }
-
   function clearForm(){
     $("profileForm").reset(); $("profileId").value = ""; $("activeProfile").checked = true;
     fields.forEach(id => { if ($(id)) $(id).value = ""; });
@@ -41,15 +56,15 @@
   }
   function openEditor(){ currentId = null; clearForm(); $("editorTitle").textContent = "إضافة ملف جديد"; show("editorView"); }
   function editProfile(id){
-    const p = readProfiles().find(x => x.id === id); if (!p) return;
+    const p = profiles.find(x => x.id === id); if (!p) return;
     currentId = id; $("profileId").value = id;
     fields.forEach(k => { if ($(k)) $(k).value = p[k] ?? ""; });
     $("activeProfile").checked = p.active !== false;
     $("editorTitle").textContent = "تعديل ملف: " + p.fullName;
     show("editorView");
   }
-  function openDetail(id){
-    selectedProfile = readProfiles().find(x => x.id === id); if (!selectedProfile) return;
+  async function openDetail(id){
+    selectedProfile = profiles.find(x => x.id === id); if (!selectedProfile) return;
     const p = selectedProfile;
     $("detailName").textContent = p.fullName;
     $("detailMeta").textContent = `${p.age ? p.age + " سنة" : "السن غير محدد"} · ${p.caseType || "عام"}`;
@@ -58,43 +73,45 @@
     const entries = [["جهة الاتصال", [p.contactName,p.contactPhone].filter(Boolean).join(" · ")],["الحساسية",p.allergies],["الحالات الطبية",p.conditions],["التأمين الصحي",p.insuranceName],["عنوان التأمين",p.insuranceAddress]];
     $("detailSummary").innerHTML = entries.map(([label,value]) => `<div class="summary-item"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value || "غير مسجل")}</strong></div>`).join("");
     $("qrcode").innerHTML = "";
-    const url = publicUrl(p.id); $("qrUrl").textContent = url;
-    if (window.QRCode) new QRCode($("qrcode"), {text:url,width:150,height:150,colorDark:"#102a43",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
-    else $("qrcode").textContent = "تعذر تحميل مكتبة QR. تأكد من اتصال الإنترنت.";
+    try {
+      const {token} = await api(`/api/profiles/${encodeURIComponent(p.id)}/qr-token`, {method:"POST"});
+      const url = publicUrl(token); $("qrUrl").textContent = url;
+      if (window.QRCode) new QRCode($("qrcode"), {text:url,width:150,height:150,colorDark:"#102a43",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+      else $("qrcode").textContent = "تعذر تحميل مكتبة QR. تأكد من اتصال الإنترنت.";
+    } catch (error) { $("qrUrl").textContent = readableError(error); }
     show("detailView");
   }
 
-  $("profileForm").addEventListener("submit", e => {
+  $("profileForm").addEventListener("submit", async e => {
     e.preventDefault();
-    const profiles = readProfiles();
-    const id = currentId || newId();
-    const p = {id, active:$("activeProfile").checked, updatedAt:new Date().toISOString()};
+    const p = {active:$("activeProfile").checked};
     fields.forEach(k => p[k] = safe($(k).value));
-    p.age = p.age ? Number(p.age) : "";
+    p.age = p.age ? Number(p.age) : null;
     if (!p.fullName || !p.contactPhone){ $("formMessage").textContent = "اكتب الاسم ورقم جهة اتصال الطوارئ."; return; }
-    const idx = profiles.findIndex(x => x.id === id);
-    if (idx >= 0) profiles[idx] = p; else profiles.unshift(p);
-    writeProfiles(profiles); currentId = id; openDetail(id); renderList();
+    try {
+      const result = await api(currentId ? `/api/profiles/${encodeURIComponent(currentId)}` : "/api/profiles", {method:currentId ? "PUT" : "POST", body:JSON.stringify(p)});
+      await refreshProfiles(); currentId = result.id; await openDetail(result.id); renderList();
+    } catch (error) { $("formMessage").textContent = readableError(error); }
   });
+  async function refreshProfiles(){ profiles = await api("/api/profiles"); renderList(); }
   $("newProfileBtn").addEventListener("click", openEditor);
   $("emptyCreateBtn").addEventListener("click", openEditor);
   $("backBtn").addEventListener("click", () => { show("dashboardView"); renderList(); });
   $("cancelBtn").addEventListener("click", () => { show("dashboardView"); renderList(); });
   $("detailBackBtn").addEventListener("click", () => { show("dashboardView"); renderList(); });
   $("editProfileBtn").addEventListener("click", () => selectedProfile && editProfile(selectedProfile.id));
-  $("openPublicBtn").addEventListener("click", () => selectedProfile && window.open("public.html?id=" + encodeURIComponent(selectedProfile.id), "_blank", "noopener"));
-  $("deleteProfileBtn").addEventListener("click", () => {
+  $("openPublicBtn").addEventListener("click", () => selectedProfile && window.open($("qrUrl").textContent, "_blank", "noopener"));
+  $("deleteProfileBtn").addEventListener("click", async () => {
     if (!selectedProfile || !confirm("متأكد إنك عايز تحذف الملف؟")) return;
-    writeProfiles(readProfiles().filter(p => p.id !== selectedProfile.id)); selectedProfile = null; show("dashboardView"); renderList();
+    try { await api(`/api/profiles/${encodeURIComponent(selectedProfile.id)}`, {method:"DELETE"}); selectedProfile = null; await refreshProfiles(); show("dashboardView"); }
+    catch(error) { alert(readableError(error)); }
   });
   $("searchInput").addEventListener("input", renderList);
   $("downloadQrBtn").addEventListener("click", () => {
-    const img = $("qrcode").querySelector("img");
-    const canvas = $("qrcode").querySelector("canvas");
+    const img = $("qrcode").querySelector("img"); const canvas = $("qrcode").querySelector("canvas");
     const data = img?.src || canvas?.toDataURL("image/png");
     if (!data) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
-    const a = document.createElement("a"); a.href = data; a.download = "medical-qr-" + (selectedProfile?.id || "profile") + ".png"; a.click();
+    const a = document.createElement("a"); a.href = data; a.download = "medical-qr-profile.png"; a.click();
   });
-
-  renderList();
+  refreshProfiles().catch(error => { $("formMessage").textContent = readableError(error); $("emptyState").classList.add("show"); });
 })();
