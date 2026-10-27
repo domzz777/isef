@@ -542,3 +542,53 @@ footer { color:var(--muted); }
   .profile-avatar { width:38px; height:38px; }
   .profile-row-actions .button { padding-inline:8px; }
 }
+
+/* Detailed profile view and a quiet copyright footer. */
+.detail-grid { grid-template-columns:minmax(0,1.12fr) minmax(300px,.88fr); gap:18px; }
+.detail-profile-panel,.detail-summary-panel { position:relative; overflow:hidden; border-radius:20px; }
+.detail-profile-panel { padding:clamp(18px,3vw,28px); }
+.detail-kicker { margin-bottom:10px; color:#61e0ea; }
+.detail-profile-panel .panel-head { align-items:flex-start; padding-bottom:15px; border-bottom:1px solid var(--line); }
+.detail-profile-panel .panel-head h3 { color:var(--text); font-size:22px; }
+.detail-profile-panel .panel-head p { margin-top:5px; color:var(--muted); font-size:12px; }
+.detail-profile-panel #detailStatus { margin-top:4px; }
+.detail-actions { gap:9px; margin:15px 0 18px; }
+.detail-actions .button { min-height:39px; padding:8px 12px; font-size:11px; }
+.detail-actions #deleteProfileBtn { margin-inline-start:auto; }
+.qr-area { grid-template-columns:minmax(180px,220px) minmax(0,1fr); gap:22px; align-items:center; margin-top:5px; padding-top:20px; border-color:var(--line); }
+.qr-box { min-height:248px; padding:13px; border:1px solid #d8e6ed; border-radius:17px; box-shadow:0 10px 30px rgba(0,0,0,.12); }
+.qr-box img,.qr-box canvas { width:min(100%,220px); height:auto; image-rendering:pixelated; }
+.qr-area h4 { margin-bottom:9px; color:var(--text); font-size:16px; }
+.qr-area .field-note { margin:8px 0 14px; line-height:1.8; }
+.qr-area #downloadQrBtn { min-height:42px; font-weight:800; }
+.url-text { margin-top:12px; padding:9px 10px; border:1px solid var(--line); border-radius:9px; background:color-mix(in srgb,var(--surface) 85%,var(--blue)); line-height:1.6; }
+.detail-summary-panel { padding:22px; }
+.summary-heading { display:flex; align-items:center; gap:12px; padding-bottom:17px; border-bottom:1px solid var(--line); }
+.summary-heading-icon { display:grid; width:43px; height:43px; flex:0 0 auto; place-items:center; border:1px solid rgba(83,226,245,.2); border-radius:14px; color:#67e6ed; background:rgba(53,173,193,.11); }
+.summary-heading-icon svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.summary-heading h3 { margin:0; color:var(--text); font-size:18px; }
+.summary-heading p { margin:3px 0 0; color:var(--muted); font-size:11px; }
+.summary-list { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:16px; }
+.summary-item { display:flex; min-width:0; min-height:78px; flex-direction:column; justify-content:center; gap:7px; padding:12px; border:1px solid var(--line); border-radius:13px; background:color-mix(in srgb,var(--surface) 93%,var(--blue)); }
+.summary-item span { display:flex; align-items:center; gap:7px; color:var(--muted); font-size:10px; }
+.summary-item span::before { width:6px; height:6px; flex:0 0 auto; border-radius:50%; background:#55dce7; content:""; }
+.summary-item strong { color:var(--text); font-size:12px; line-height:1.65; overflow-wrap:anywhere; }
+:root[data-theme="light"] .summary-heading-icon { color:#087f91; background:#e7f6fb; }
+:root[data-theme="light"] .qr-box { box-shadow:0 10px 30px rgba(21,55,80,.08); }
+.site-footer { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:26px; padding:18px 8px 14px; border-top:1px solid var(--line); color:var(--muted); font-size:10px; letter-spacing:.2px; }
+.site-footer span:first-child { color:var(--text); font-weight:800; }
+.site-footer span+span { padding-inline-start:10px; border-inline-start:1px solid var(--line); }
+@media(max-width:900px) {
+  .detail-grid { grid-template-columns:1fr; }
+}
+@media(max-width:520px) {
+  .detail-profile-panel,.detail-summary-panel { padding:16px; }
+  .detail-actions { display:grid; grid-template-columns:1fr 1fr; }
+  .detail-actions #deleteProfileBtn { margin-inline-start:0; }
+  .detail-actions #openPublicBtn { grid-column:1/-1; }
+  .qr-area { grid-template-columns:1fr; gap:17px; text-align:center; }
+  .qr-box { width:min(100%,260px); margin-inline:auto; }
+  .summary-list { grid-template-columns:1fr; }
+  .summary-item { min-height:68px; }
+  .site-footer { flex-wrap:wrap; gap:7px; }
+}

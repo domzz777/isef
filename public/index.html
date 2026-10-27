@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102a43">
   <title>Medical QR | لوحة إدارة السوار الطبي</title>
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
   <script src="theme.js?v=2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="app.js?v=2" defer></script>
@@ -103,14 +103,14 @@
     <section id="detailView" class="hidden">
       <div class="page-title"><button class="button ghost" id="detailBackBtn">← لوحة الإدارة</button><div><p class="eyebrow">معاينة الملف</p><h1>السوار وصفحة الطوارئ</h1></div></div>
       <div class="detail-grid">
-        <section class="panel"><div class="panel-head"><div><h3 id="detailName">اسم الشخص</h3><p id="detailMeta"></p></div><span class="status-pill" id="detailStatus">نشط</span></div>
+        <section class="panel detail-profile-panel"><p class="eyebrow detail-kicker">ملف السوار</p><div class="panel-head"><div><h3 id="detailName">اسم الشخص</h3><p id="detailMeta"></p></div><span class="status-pill" id="detailStatus">نشط</span></div>
           <div class="detail-actions"><button class="button primary" id="openPublicBtn">عرض صفحة QR العامة</button><button class="button secondary" id="editProfileBtn">تعديل البيانات</button><button class="button danger-outline" id="deleteProfileBtn">حذف الملف</button></div>
           <div class="qr-area"><div id="qrcode" class="qr-box"></div><div><h4>QR Code للسوار</h4><p class="field-note">اضغط «اطبع الآن» واختار مقاس 4×4 سم. سيب الإطار الأبيض حول الكود عشان الموبايل يمسحه بسهولة.</p><button class="button secondary" id="downloadQrBtn">اطبع الآن · 4×4 سم</button><p id="qrUrl" class="url-text"></p></div></div>
         </section>
-        <section class="panel"><h3>ملخص البيانات العامة</h3><div id="detailSummary" class="summary-list"></div></section>
+        <section class="panel detail-summary-panel"><div class="summary-heading"><span class="summary-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 13h8M9 17h8"/></svg></span><div><h3>ملخص البيانات</h3><p>المعلومات المسجلة في الملف</p></div></div><div id="detailSummary" class="summary-list"></div></section>
       </div>
     </section>
-    <footer>ISEF · MEDICAL QR <span>•</span> نموذج أولي لمشروع السوار الطبي، وليس نظامًا طبيًا معتمدًا.</footer>
+    <footer class="site-footer"><span>© 2026 MEDICAL QR</span><span>جميع الحقوق محفوظة</span></footer>
   </main>
 </body>
 </html>
