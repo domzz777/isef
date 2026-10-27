@@ -6,16 +6,25 @@
   let profiles = [];
   let adminAuth = sessionStorage.getItem("medicalQrAdminAuth") || "";
 
+  function encodeCredentials(username, password){
+    const bytes = new TextEncoder().encode(username + ":" + password);
+    let binary = "";
+    bytes.forEach(byte => binary += String.fromCharCode(byte));
+    return btoa(binary);
+  }
+
+  function showLogin(message = ""){
+    $("loginPanel").classList.remove("hidden");
+    $("loginMessage").textContent = message;
+  }
+
   async function api(path, options = {}) {
     let response = await fetch(path, { ...options, headers: { ...(options.body ? {"Content-Type":"application/json"} : {}), ...(adminAuth ? {"Authorization":"Basic " + adminAuth} : {}), ...(options.headers || {}) } });
     if (response.status === 401) {
-      const username = window.prompt("اسم مستخدم لوحة الإدارة");
-      if (username === null) throw new Error("يلزم تسجيل الدخول لإدارة الملفات.");
-      const password = window.prompt("كلمة مرور لوحة الإدارة");
-      if (password === null) throw new Error("يلزم تسجيل الدخول لإدارة الملفات.");
-      adminAuth = btoa(unescape(encodeURIComponent(username + ":" + password)));
-      sessionStorage.setItem("medicalQrAdminAuth", adminAuth);
-      response = await fetch(path, { ...options, headers: { ...(options.body ? {"Content-Type":"application/json"} : {}), "Authorization":"Basic " + adminAuth, ...(options.headers || {}) } });
+      adminAuth = "";
+      sessionStorage.removeItem("medicalQrAdminAuth");
+      showLogin("سجّل الدخول لمتابعة إدارة الملفات.");
+      throw new Error("يلزم تسجيل الدخول لإدارة الملفات.");
     }
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.error || "تعذر الاتصال بالخادم.");
@@ -38,10 +47,10 @@
     $("qrCount").textContent = profiles.length;
     $("profilesList").innerHTML = filtered.map(p => `
       <article class="profile-row">
-        <div class="profile-avatar">${escapeHtml((p.fullName || "?").slice(0,1))}</div>
-        <div class="profile-info"><strong>${escapeHtml(p.fullName || "بدون اسم")}</strong><span>${escapeHtml(p.caseType || "عام")} · ${p.age ? escapeHtml(p.age) + " سنة" : "السن غير محدد"}</span></div>
+        <div class="profile-avatar" aria-hidden="true">${escapeHtml((p.fullName || "?").slice(0,1))}</div>
+        <div class="profile-info"><strong>${escapeHtml(p.fullName || "بدون اسم")}</strong><span>${escapeHtml(p.caseType || "عام")} <i aria-hidden="true"></i> ${p.age ? escapeHtml(p.age) + " سنة" : "السن غير محدد"}</span></div>
         <span class="status-pill ${p.active ? "" : "off"}">${p.active ? "نشط" : "غير نشط"}</span>
-        <div class="profile-row-actions"><button class="button secondary" data-view="${escapeHtml(p.id)}">عرض QR</button><button class="button ghost" data-edit="${escapeHtml(p.id)}">تعديل</button></div>
+        <div class="profile-row-actions"><button class="button secondary" data-view="${escapeHtml(p.id)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><span>عرض QR</span></button><button class="button ghost" data-edit="${escapeHtml(p.id)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5 5 5M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z"/></svg><span>تعديل</span></button></div>
       </article>`).join("");
     $("emptyState").classList.toggle("show", profiles.length === 0);
     $("profilesList").style.display = profiles.length === 0 ? "none" : "grid";
@@ -94,6 +103,23 @@
     } catch (error) { $("formMessage").textContent = readableError(error); }
   });
   async function refreshProfiles(){ profiles = await api("/api/profiles"); renderList(); }
+  $("loginForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const username = $("adminUsername").value.trim();
+    const password = $("adminPassword").value;
+    adminAuth = encodeCredentials(username, password);
+    try {
+      await refreshProfiles();
+      sessionStorage.setItem("medicalQrAdminAuth", adminAuth);
+      $("loginPanel").classList.add("hidden");
+      $("loginMessage").textContent = "";
+      $("adminPassword").value = "";
+    } catch (error) {
+      adminAuth = "";
+      sessionStorage.removeItem("medicalQrAdminAuth");
+      $("loginMessage").textContent = error.message.includes("غير صحيحة") ? "اسم المستخدم أو كلمة المرور غير صحيحة." : readableError(error);
+    }
+  });
   $("newProfileBtn").addEventListener("click", openEditor);
   $("emptyCreateBtn").addEventListener("click", openEditor);
   $("backBtn").addEventListener("click", () => { show("dashboardView"); renderList(); });
@@ -133,5 +159,9 @@
     printWindow.document.write(`<!doctype html><html lang="ar"><head><meta charset="utf-8"><title>QR 4×4 سم</title><style>@page{size:4cm 4cm;margin:0}*{box-sizing:border-box}html,body{width:4cm;height:4cm;margin:0;padding:0}img{display:block;width:4cm;height:4cm}</style></head><body><img src="${imageUrl}" alt="QR Code"><script>window.addEventListener('load',()=>setTimeout(()=>window.print(),250));window.addEventListener('afterprint',()=>window.close());<\/script></body></html>`);
     printWindow.document.close();
   });
-  refreshProfiles().catch(error => { $("formMessage").textContent = readableError(error); $("emptyState").classList.add("show"); });
+  refreshProfiles().catch(error => {
+    if (!$("loginPanel").classList.contains("hidden")) return;
+    $("formMessage").textContent = readableError(error);
+    $("emptyState").classList.add("show");
+  });
 })();

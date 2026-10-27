@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102a43">
   <title>Medical QR | لوحة إدارة السوار الطبي</title>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
   <script src="theme.js?v=2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=2" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -39,7 +39,7 @@
         <article class="stat-card"><span class="stat-icon">⌁</span><span class="stat-label">QR متاح</span><strong id="qrCount">0</strong></article>
       </div>
 
-      <section class="panel">
+      <section class="panel profiles-panel">
         <div class="panel-head"><div><h3>قائمة الملفات</h3><p>اضغط على ملف لمعاينته أو تعديله.</p></div><input id="searchInput" class="search" placeholder="ابحث بالاسم..." aria-label="ابحث بالاسم"></div>
         <div id="profilesList" class="profiles-list"></div>
         <div id="emptyState" class="empty-state"><div class="empty-icon">▤</div><h3>لسه مفيش ملفات</h3><p>أضف ملفًا تجريبيًا لعرض معلومات الطوارئ وتوليد QR.</p><button class="button primary" id="emptyCreateBtn">إنشاء أول ملف</button></div>

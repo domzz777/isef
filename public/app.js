@@ -47,10 +47,10 @@
     $("qrCount").textContent = profiles.length;
     $("profilesList").innerHTML = filtered.map(p => `
       <article class="profile-row">
-        <div class="profile-avatar">${escapeHtml((p.fullName || "?").slice(0,1))}</div>
-        <div class="profile-info"><strong>${escapeHtml(p.fullName || "بدون اسم")}</strong><span>${escapeHtml(p.caseType || "عام")} · ${p.age ? escapeHtml(p.age) + " سنة" : "السن غير محدد"}</span></div>
+        <div class="profile-avatar" aria-hidden="true">${escapeHtml((p.fullName || "?").slice(0,1))}</div>
+        <div class="profile-info"><strong>${escapeHtml(p.fullName || "بدون اسم")}</strong><span>${escapeHtml(p.caseType || "عام")} <i aria-hidden="true"></i> ${p.age ? escapeHtml(p.age) + " سنة" : "السن غير محدد"}</span></div>
         <span class="status-pill ${p.active ? "" : "off"}">${p.active ? "نشط" : "غير نشط"}</span>
-        <div class="profile-row-actions"><button class="button secondary" data-view="${escapeHtml(p.id)}">عرض QR</button><button class="button ghost" data-edit="${escapeHtml(p.id)}">تعديل</button></div>
+        <div class="profile-row-actions"><button class="button secondary" data-view="${escapeHtml(p.id)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><span>عرض QR</span></button><button class="button ghost" data-edit="${escapeHtml(p.id)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5 5 5M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z"/></svg><span>تعديل</span></button></div>
       </article>`).join("");
     $("emptyState").classList.toggle("show", profiles.length === 0);
     $("profilesList").style.display = profiles.length === 0 ? "none" : "grid";
