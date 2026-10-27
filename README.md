@@ -1,39 +1,26 @@
 # Medical QR Safety Bracelet
 
-نموذج أولي لإدارة ملفات طوارئ باستخدام Node.js وSQLite. البيانات العامة فقط تظهر في صفحة QR، بينما `privateNotes` تبقى داخل لوحة الإدارة.
+نسخة قابلة للنشر مجانًا على Cloudflare Pages مع Cloudflare D1. الواجهة تُقدّم من `public/`، وواجهات API تعمل عبر Pages Functions في `functions/`، والبيانات تحفظ في D1. لا ترفع مجلد `data` أو أي قاعدة SQLite محلية.
 
-## تشغيل محلي
+## إعداد Cloudflare Pages
 
-1. ثبّت Node.js 22.13 أو أحدث.
-2. من PowerShell داخل مجلد المشروع عيّن بيانات دخول الإدارة وشغّل الخادم:
+1. في Cloudflare Dashboard افتح **Workers & Pages → Create application → Pages → Import an existing Git repository**.
+2. اختر المستودع `domzz777/isef` والفرع `deploy/cloudflare-d1`.
+3. استخدم الإعدادات التالية: Framework preset **None**, Build command `exit 0`, Build output directory `public`.
+4. أنشئ قاعدة D1 باسم `medical-qr-db`، ثم افتح Console فيها ونفّذ SQL الموجود في `migrations/0001_profiles.sql` مرة واحدة.
+5. في مشروع Pages افتح **Settings → Bindings → Add → D1 database**. سمّ binding باسم `DB` واختر `medical-qr-db`، ثم أعد النشر.
+6. في **Settings → Variables and Secrets** عيّن `ADMIN_USER` وأنشئ سرًا `ADMIN_PASSWORD`، ثم أعد النشر. احفظ كلمة المرور ولا ترفعها إلى GitHub.
+7. افتح رابط `*.pages.dev`، سجّل الدخول إلى لوحة الإدارة، أضف الملف، ثم أنشئ QR جديدًا. الرابط العام سيعمل على الموبايل.
 
-```powershell
-$env:ADMIN_USER = "admin"
-$env:ADMIN_PASSWORD = "اكتب-كلمة-مرور-قوية-هنا"
-node server.js
-```
+Cloudflare D1 يتضمن خطة مجانية بحدود يومية وحد تخزين؛ إذا تجاوز الموقع حدود الخطة، تتوقف استعلامات قاعدة البيانات حتى إعادة الضبط أو الترقية. راجع [تفاصيل D1 الرسمية](https://developers.cloudflare.com/d1/platform/pricing/). صفحة QR عامة لمن يملك الرابط، وتعرض حقول الطوارئ فقط.
 
-3. افتح `http://localhost:3000`. أول طلب للوحة الإدارة سيطلب اسم المستخدم وكلمة المرور.
+## تطوير محلي
 
-قاعدة البيانات تنشأ تلقائيًا في `data/medical-qr.sqlite`. لا توجد حزم خارجية مطلوبة. لإيقاف الخادم اضغط `Ctrl+C`.
+الخادم `server.js` خيار محلي يستخدم SQLite، وليس جزءًا من نشر Cloudflare. لتشغيله، استخدم Node.js 22.13 أو أحدث واضبط `ADMIN_USER` و`ADMIN_PASSWORD`، ثم شغّل `node server.js` وافتح `http://localhost:3000`.
 
-## النشر على Render
+## الملفات الأساسية
 
-يوجد ملف `render.yaml` لإعداد خدمة Node.js وقاعدة بيانات SQLite على قرص دائم. من مستودع GitHub اختر **New > Blueprint**, ثم اربط المستودع/الفرع الذي يحتوي الملفات. عند الطلب، أدخل `ADMIN_USER` وكلمة مرور قوية في `ADMIN_PASSWORD`. افتح رابط `onrender.com` بعد اكتمال النشر؛ الخدمة نفسها تقدم لوحة الإدارة وصفحة QR.
-
-الإعداد يطلب خطة Render مدفوعة لأن SQLite تحتاج قرصًا دائمًا؛ نظام الملفات العادي للخدمة مؤقت. لا ترفع مجلد `data` أو كلمات المرور إلى GitHub. رمز QR سيستخدم نطاق Render العام.
-
-## قاعدة البيانات والخصوصية
-
-- قاعدة البيانات المحلية: `data/medical-qr.sqlite`، مستبعدة من Git عبر `.gitignore`.
-- خادم API يحمي عمليات الإدارة ببيانات دخول `ADMIN_USER` و`ADMIN_PASSWORD`.
-- صفحة الطوارئ عامة لمن يملك رمز QR؛ إصدار رمز جديد يبطل القديم.
-- لا تدخل بيانات صحية أو شخصية حقيقية في هذا النموذج. كلمة المرور لا تحول النظام إلى سجل طبي معتمد؛ الاستخدام الواقعي يتطلب مراجعة أمنية وقانونية، وإجراءات خصوصية وموافقة مناسبة.
-
-## ملفات المشروع
-
-- `server.js`: API وSQLite وخدمة صفحات الموقع.
-- `app.js`, `index.html`: لوحة الإدارة.
-- `public.js`, `public.html`: صفحة الطوارئ العامة.
-- `style.css`: التنسيق.
-- `render.yaml`: إعداد النشر على Render.
+- `functions/`: API لـCloudflare Pages Functions.
+- `migrations/0001_profiles.sql`: إنشاء جدول D1.
+- `public/`: ملفات الموقع المنشورة.
+- `server.js`: خادم SQLite للتطوير المحلي فقط.
