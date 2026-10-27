@@ -137,7 +137,7 @@
     const source = $("qrcode").querySelector("canvas") || $("qrcode").querySelector("img");
     if (!source) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
     const size = 1200;
-    const quietZone = 120;
+    const quietZone = 160;
     const output = document.createElement("canvas");
     output.width = size;
     output.height = size;
@@ -146,10 +146,18 @@
     context.fillRect(0, 0, size, size);
     context.imageSmoothingEnabled = false;
     context.drawImage(source, quietZone, quietZone, size - quietZone * 2, size - quietZone * 2);
-    const a = document.createElement("a");
-    a.href = output.toDataURL("image/png");
-    a.download = "medical-qr-print-3x3cm.png";
-    a.click();
+    const imageUrl = output.toDataURL("image/png");
+    const printWindow = window.open("", "_blank", "popup,width=500,height=600");
+    if (!printWindow) {
+      const a = document.createElement("a");
+      a.href = imageUrl;
+      a.download = "medical-qr-profile-print-4x4cm.png";
+      a.click();
+      alert("المتصفح منع نافذة الطباعة، فتم تنزيل صورة QR بمقاس 4×4 سم. اطبعها بالحجم الفعلي 100%.");
+      return;
+    }
+    printWindow.document.write(`<!doctype html><html lang="ar"><head><meta charset="utf-8"><title>QR 4×4 سم</title><style>@page{size:4cm 4cm;margin:0}*{box-sizing:border-box}html,body{width:4cm;height:4cm;margin:0;padding:0}img{display:block;width:4cm;height:4cm}</style></head><body><img src="${imageUrl}" alt="QR Code"><script>window.addEventListener('load',()=>setTimeout(()=>window.print(),250));window.addEventListener('afterprint',()=>window.close());<\/script></body></html>`);
+    printWindow.document.close();
   });
   refreshProfiles().catch(error => {
     if (!$("loginPanel").classList.contains("hidden")) return;
