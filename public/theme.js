@@ -1,10 +1,9 @@
 (() => {
-  const key = "medicalQrTheme";
+  const key = "medicalQrThemeOrbit";
   const root = document.documentElement;
   let saved = "";
   try { saved = localStorage.getItem(key) || ""; } catch {}
-  const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
-  let theme = saved || (prefersDark ? "dark" : "light");
+  let theme = saved || "dark";
 
   function applyTheme() {
     root.dataset.theme = theme;
