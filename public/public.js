@@ -19,6 +19,8 @@
       };
       document.dispatchEvent(new CustomEvent("medicalQrProfileReady"));
       show("publicName",p.fullName);
+      const initials = String(p.fullName || "?").trim().split(/\s+/).filter(Boolean).slice(0, 3).map(part => Array.from(part)[0]).join("");
+      $("publicAvatar").textContent = initials || "؟";
       show("publicMeta",`${p.age ? p.age + " سنة" : "السن غير محدد"} · ${p.bloodType ? "فصيلة الدم: " + p.bloodType : "فصيلة الدم غير مسجلة"}`, "");
       show("publicContact",[p.contactName,p.contactRelation,p.contactPhone].filter(Boolean).join(" · "));
       const phone = String(p.contactPhone || "").replace(/[^\d+]/g,"");
