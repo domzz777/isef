@@ -6,16 +6,25 @@
   let profiles = [];
   let adminAuth = sessionStorage.getItem("medicalQrAdminAuth") || "";
 
+  function encodeCredentials(username, password){
+    const bytes = new TextEncoder().encode(username + ":" + password);
+    let binary = "";
+    bytes.forEach(byte => binary += String.fromCharCode(byte));
+    return btoa(binary);
+  }
+
+  function showLogin(message = ""){
+    $("loginPanel").classList.remove("hidden");
+    $("loginMessage").textContent = message;
+  }
+
   async function api(path, options = {}) {
     let response = await fetch(path, { ...options, headers: { ...(options.body ? {"Content-Type":"application/json"} : {}), ...(adminAuth ? {"Authorization":"Basic " + adminAuth} : {}), ...(options.headers || {}) } });
     if (response.status === 401) {
-      const username = window.prompt("اسم مستخدم لوحة الإدارة");
-      if (username === null) throw new Error("يلزم تسجيل الدخول لإدارة الملفات.");
-      const password = window.prompt("كلمة مرور لوحة الإدارة");
-      if (password === null) throw new Error("يلزم تسجيل الدخول لإدارة الملفات.");
-      adminAuth = btoa(unescape(encodeURIComponent(username + ":" + password)));
-      sessionStorage.setItem("medicalQrAdminAuth", adminAuth);
-      response = await fetch(path, { ...options, headers: { ...(options.body ? {"Content-Type":"application/json"} : {}), "Authorization":"Basic " + adminAuth, ...(options.headers || {}) } });
+      adminAuth = "";
+      sessionStorage.removeItem("medicalQrAdminAuth");
+      showLogin("سجّل الدخول لمتابعة إدارة الملفات.");
+      throw new Error("يلزم تسجيل الدخول لإدارة الملفات.");
     }
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.error || "تعذر الاتصال بالخادم.");
@@ -94,6 +103,23 @@
     } catch (error) { $("formMessage").textContent = readableError(error); }
   });
   async function refreshProfiles(){ profiles = await api("/api/profiles"); renderList(); }
+  $("loginForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const username = $("adminUsername").value.trim();
+    const password = $("adminPassword").value;
+    adminAuth = encodeCredentials(username, password);
+    try {
+      await refreshProfiles();
+      sessionStorage.setItem("medicalQrAdminAuth", adminAuth);
+      $("loginPanel").classList.add("hidden");
+      $("loginMessage").textContent = "";
+      $("adminPassword").value = "";
+    } catch (error) {
+      adminAuth = "";
+      sessionStorage.removeItem("medicalQrAdminAuth");
+      $("loginMessage").textContent = error.message.includes("غير صحيحة") ? "اسم المستخدم أو كلمة المرور غير صحيحة." : readableError(error);
+    }
+  });
   $("newProfileBtn").addEventListener("click", openEditor);
   $("emptyCreateBtn").addEventListener("click", openEditor);
   $("backBtn").addEventListener("click", () => { show("dashboardView"); renderList(); });
@@ -113,5 +139,9 @@
     if (!data) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
     const a = document.createElement("a"); a.href = data; a.download = "medical-qr-profile.png"; a.click();
   });
-  refreshProfiles().catch(error => { $("formMessage").textContent = readableError(error); $("emptyState").classList.add("show"); });
+  refreshProfiles().catch(error => {
+    if (!$("loginPanel").classList.contains("hidden")) return;
+    $("formMessage").textContent = readableError(error);
+    $("emptyState").classList.add("show");
+  });
 })();

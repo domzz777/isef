@@ -43,6 +43,16 @@
         <div id="profilesList" class="profiles-list"></div>
         <div id="emptyState" class="empty-state"><div class="empty-icon">▤</div><h3>لسه مفيش ملفات</h3><p>ابدأ بإنشاء ملف تجريبي، وبعدها تقدر تعرض صفحة الطوارئ وتولّد QR.</p><button class="button primary" id="emptyCreateBtn">إنشاء أول ملف</button></div>
       </section>
+      <section id="loginPanel" class="panel login-panel hidden" aria-labelledby="loginTitle">
+        <h2 id="loginTitle">تسجيل دخول الإدارة</h2>
+        <p class="field-note">أدخل بيانات الإدارة التي ضبطتها في Cloudflare لعرض الملفات أو تعديلها.</p>
+        <form id="loginForm" class="login-form">
+          <label>اسم المستخدم<input id="adminUsername" name="username" autocomplete="username" required></label>
+          <label>كلمة المرور<input id="adminPassword" name="password" type="password" autocomplete="current-password" required></label>
+          <button class="button primary" type="submit">تسجيل الدخول</button>
+        </form>
+        <p id="loginMessage" class="form-message" role="status"></p>
+      </section>
     </section>
 
     <section id="editorView" class="hidden">
