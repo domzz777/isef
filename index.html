@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102a43">
   <title>Medical QR | لوحة إدارة السوار الطبي</title>
-  <link rel="stylesheet" href="style.css?v=2">
-  <script src="theme.js" defer></script>
+  <link rel="stylesheet" href="style.css?v=3">
+  <script src="theme.js?v=2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M24 3 6 10v12c0 11.1 7.5 19 18 23 10.5-4 18-11.9 18-23V10L24 3Z"/><path class="brand-mark-cross" d="M20 12h8v8h8v8h-8v8h-8v-8h-8v-8h8z"/></svg></span><span>MEDICAL <b>QR</b><small>ISEF PROJECT</small></span></a>
-    <div class="header-tools"><span class="prototype-tag">مشروع ISEF</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="تفعيل الوضع الليلي"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">الوضع الليلي</span></button></div>
+    <div class="header-tools"><span class="prototype-tag">مشروع ISEF</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="Dark mode"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">Dark mode</span></button></div>
   </header>
 
   <main class="shell">
@@ -24,7 +24,7 @@
           <h1>معلومات مهمة، وقت ما تكون مهمة.</h1>
           <p class="hero-copy">أنشئ ملف طوارئ لكل سوار، وولّد QR يفتح صفحة معلومات الطوارئ.</p>
         </div>
-        <div class="hero-symbol" aria-hidden="true">✚</div>
+        <div class="hero-symbol" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><rect x="15" y="22" width="98" height="84" rx="17"/><circle cx="48" cy="55" r="19"/><path d="M48 43v24M36 55h24M80 48h18M80 62h18M31 88h66"/></svg></div>
       </div>
 
 
@@ -45,14 +45,23 @@
         <div id="emptyState" class="empty-state"><div class="empty-icon">▤</div><h3>لسه مفيش ملفات</h3><p>أضف ملفًا تجريبيًا لعرض معلومات الطوارئ وتوليد QR.</p><button class="button primary" id="emptyCreateBtn">إنشاء أول ملف</button></div>
       </section>
       <section id="loginPanel" class="panel login-panel hidden" aria-labelledby="loginTitle">
-        <h2 id="loginTitle">تسجيل دخول الإدارة</h2>
-        <p class="field-note">أدخل بيانات الإدارة التي ضبطتها في Cloudflare لعرض الملفات أو تعديلها.</p>
-        <form id="loginForm" class="login-form">
-          <label>اسم المستخدم<input id="adminUsername" name="username" autocomplete="username" required></label>
-          <label>كلمة المرور<input id="adminPassword" name="password" type="password" autocomplete="current-password" required></label>
-          <button class="button primary" type="submit">تسجيل الدخول</button>
-        </form>
-        <p id="loginMessage" class="form-message" role="status"></p>
+        <div class="login-visual" aria-hidden="true">
+          <span class="login-visual-mark"><svg viewBox="0 0 48 48" focusable="false"><path d="M24 3 6 10v12c0 11.1 7.5 19 18 23 10.5-4 18-11.9 18-23V10L24 3Z"/><path class="login-mark-cross" d="M20 12h8v8h8v8h-8v8h-8v-8h-8v-8h8z"/></svg></span>
+          <span class="login-orbit orbit-one"></span><span class="login-orbit orbit-two"></span>
+          <p>ISEF · MEDICAL QR</p><h3>إدارة آمنة<br>لملفات السوار</h3><span class="login-visual-caption">كل معلومات الطوارئ في مكان واحد</span>
+        </div>
+        <div class="login-content">
+          <p class="login-kicker">CONTROL CENTER <span>•</span> ISEF</p>
+          <h2 id="loginTitle">مرحبًا بعودتك</h2>
+          <p class="field-note">سجّل دخولك لإدارة ملفات السوار ومعلومات الطوارئ.</p>
+          <form id="loginForm" class="login-form">
+            <label>اسم المستخدم<input id="adminUsername" name="username" autocomplete="username" placeholder="اكتب اسم المستخدم" required></label>
+            <label>كلمة المرور<input id="adminPassword" name="password" type="password" autocomplete="current-password" placeholder="اكتب كلمة المرور" required></label>
+            <button class="button primary" type="submit"><span>تسجيل الدخول</span><span aria-hidden="true">←</span></button>
+          </form>
+          <p class="login-secure-note"><span aria-hidden="true">◆</span> اتصال آمن · لا تشارك بيانات الدخول</p>
+          <p id="loginMessage" class="form-message" role="status"></p>
+        </div>
       </section>
     </section>
 

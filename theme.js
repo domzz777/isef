@@ -10,8 +10,8 @@
     const button = document.getElementById("themeToggle");
     if (!button) return;
     const dark = theme === "dark";
-    button.setAttribute("aria-label", dark ? "تفعيل الوضع الفاتح" : "تفعيل الوضع الليلي");
-    button.querySelector(".theme-label").textContent = dark ? "الوضع الفاتح" : "الوضع الليلي";
+    button.setAttribute("aria-label", dark ? "Dark mode" : "Light mode");
+    button.querySelector(".theme-label").textContent = dark ? "Dark mode" : "Light mode";
     button.querySelector(".theme-icon").textContent = dark ? "☼" : "◐";
   }
 
