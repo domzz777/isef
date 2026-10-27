@@ -17,9 +17,22 @@
       sessionStorage.setItem("medicalQrAdminAuth", adminAuth);
       response = await fetch(path, { ...options, headers: { ...(options.body ? {"Content-Type":"application/json"} : {}), "Authorization":"Basic " + adminAuth, ...(options.headers || {}) } });
     }
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || "تعذر الاتصال بالخادم.");
+    const contentType = response.headers.get("content-type") || "";
+    const data = contentType.includes("application/json") ? await response.json().catch(() => ({})) : {};
+    if (!response.ok) {
+      if (response.status === 404 && !contentType.includes("application/json")) {
+        throw new Error("الموقع مفتوح على استضافة ثابتة مثل GitHub Pages، وهي لا تشغّل خادم الموقع. انشر المشروع كخدمة Node.js على Render وافتح رابط الخدمة هناك.");
+      }
+      throw new Error(data.error || "تعذر الاتصال بالخادم.");
+    }
+    if (!contentType.includes("application/json")) {
+      throw new Error("الخادم لم يُرجع بيانات API. تأكد من فتح رابط خدمة Node.js على Render، وليس رابط GitHub Pages.");
+    }
     return data;
+  }
+  function readableError(error){
+    if (error instanceof TypeError && /fetch/i.test(error.message)) return "الخادم غير متصل. شغّل node server.js من مجلد المشروع، ثم افتح http://localhost:3000/dashboard.html بدل فتح ملف HTML مباشرة.";
+    return error.message || "حدث خطأ غير متوقع.";
   }
   function safe(value){ return String(value ?? "").trim(); }
   function escapeHtml(value){ return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -72,9 +85,9 @@
     try {
       const {token} = await api(`/api/profiles/${encodeURIComponent(p.id)}/qr-token`, {method:"POST"});
       const url = publicUrl(token); $("qrUrl").textContent = url;
-      if (window.QRCode) new QRCode($("qrcode"), {text:url,width:150,height:150,colorDark:"#102a43",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+      if (window.QRCode) new QRCode($("qrcode"), {text:url,width:220,height:220,colorDark:"#102a43",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
       else $("qrcode").textContent = "تعذر تحميل مكتبة QR. تأكد من اتصال الإنترنت.";
-    } catch (error) { $("qrUrl").textContent = error.message; }
+    } catch (error) { $("qrUrl").textContent = readableError(error); }
     show("detailView");
   }
 
@@ -87,7 +100,7 @@
     try {
       const result = await api(currentId ? `/api/profiles/${encodeURIComponent(currentId)}` : "/api/profiles", {method:currentId ? "PUT" : "POST", body:JSON.stringify(p)});
       await refreshProfiles(); currentId = result.id; await openDetail(result.id); renderList();
-    } catch (error) { $("formMessage").textContent = error.message; }
+    } catch (error) { $("formMessage").textContent = readableError(error); }
   });
   async function refreshProfiles(){ profiles = await api("/api/profiles"); renderList(); }
   $("newProfileBtn").addEventListener("click", openEditor);
@@ -100,14 +113,42 @@
   $("deleteProfileBtn").addEventListener("click", async () => {
     if (!selectedProfile || !confirm("متأكد إنك عايز تحذف الملف؟")) return;
     try { await api(`/api/profiles/${encodeURIComponent(selectedProfile.id)}`, {method:"DELETE"}); selectedProfile = null; await refreshProfiles(); show("dashboardView"); }
-    catch(error) { alert(error.message); }
+    catch(error) { alert(readableError(error)); }
   });
   $("searchInput").addEventListener("input", renderList);
   $("downloadQrBtn").addEventListener("click", () => {
-    const img = $("qrcode").querySelector("img"); const canvas = $("qrcode").querySelector("canvas");
-    const data = img?.src || canvas?.toDataURL("image/png");
-    if (!data) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
-    const a = document.createElement("a"); a.href = data; a.download = "medical-qr-profile.png"; a.click();
+    const url = safe($("qrUrl").textContent);
+    if (!url.startsWith("https://") && !url.startsWith("http://")) {
+      alert("QR لسه متولدش. افتح الملف مرة تانية وانتظر ظهور الرابط.");
+      return;
+    }
+    if (!window.QRCode) {
+      alert("مكتبة إنشاء QR غير متاحة. حدّث الصفحة وتأكد من اتصال الإنترنت.");
+      return;
+    }
+
+    const holder = document.createElement("div");
+    holder.setAttribute("aria-hidden", "true");
+    holder.style.cssText = "position:fixed;left:-10000px;top:0;width:600px;height:600px";
+    document.body.appendChild(holder);
+    try {
+      new QRCode(holder, {text:url,width:600,height:600,colorDark:"#102a43",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+      const canvas = holder.querySelector("canvas");
+      if (!canvas) throw new Error("لم يتم إنشاء صورة QR.");
+      canvas.toBlob(blob => {
+        holder.remove();
+        if (!blob) { alert("تعذر تجهيز صورة QR للتنزيل. حاول مرة أخرى."); return; }
+        const objectUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = objectUrl;
+        link.download = "medical-qr-profile.png";
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+      }, "image/png");
+    } catch (error) {
+      holder.remove();
+      alert(error.message || "تعذر تجهيز صورة QR للتنزيل.");
+    }
   });
-  refreshProfiles().catch(error => { $("formMessage").textContent = error.message; $("emptyState").classList.add("show"); });
+  refreshProfiles().catch(error => { $("formMessage").textContent = readableError(error); $("emptyState").classList.add("show"); });
 })();
