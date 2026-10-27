@@ -76,7 +76,7 @@
     try {
       const {token} = await api(`/api/profiles/${encodeURIComponent(p.id)}/qr-token`, {method:"POST"});
       const url = publicUrl(token); $("qrUrl").textContent = url;
-      if (window.QRCode) new QRCode($("qrcode"), {text:url,width:150,height:150,colorDark:"#102a43",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+      if (window.QRCode) new QRCode($("qrcode"), {text:url,width:220,height:220,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
       else $("qrcode").textContent = "تعذر تحميل مكتبة QR. تأكد من اتصال الإنترنت.";
     } catch (error) { $("qrUrl").textContent = readableError(error); }
     show("detailView");
@@ -108,10 +108,22 @@
   });
   $("searchInput").addEventListener("input", renderList);
   $("downloadQrBtn").addEventListener("click", () => {
-    const img = $("qrcode").querySelector("img"); const canvas = $("qrcode").querySelector("canvas");
-    const data = img?.src || canvas?.toDataURL("image/png");
-    if (!data) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
-    const a = document.createElement("a"); a.href = data; a.download = "medical-qr-profile.png"; a.click();
+    const source = $("qrcode").querySelector("canvas") || $("qrcode").querySelector("img");
+    if (!source) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
+    const size = 1200;
+    const quietZone = 120;
+    const output = document.createElement("canvas");
+    output.width = size;
+    output.height = size;
+    const context = output.getContext("2d");
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, size, size);
+    context.imageSmoothingEnabled = false;
+    context.drawImage(source, quietZone, quietZone, size - quietZone * 2, size - quietZone * 2);
+    const a = document.createElement("a");
+    a.href = output.toDataURL("image/png");
+    a.download = "medical-qr-profile-print-3x3cm.png";
+    a.click();
   });
   refreshProfiles().catch(error => { $("formMessage").textContent = readableError(error); $("emptyState").classList.add("show"); });
 })();
