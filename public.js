@@ -10,7 +10,6 @@
       if (!response.ok) throw new Error("الملف غير موجود أو غير نشط.");
       const p = await response.json();
       $("notFound").classList.remove("show"); $("publicProfile").classList.remove("hidden");
-      window.medicalQrProfileContext = {caseType:p.caseType || "", conditions:p.conditions || ""};
       $("sanadWidget")?.classList.remove("hidden");
       document.dispatchEvent(new CustomEvent("medicalQrProfileReady"));
       show("publicName",p.fullName);

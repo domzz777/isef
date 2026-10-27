@@ -10,27 +10,23 @@
   const input = $("sanadInput");
   const send = form.querySelector('button[type="submit"]');
 
-  function addMessage(text, role) {
+  function addMessage(text, role, sources = []) {
     const article = document.createElement("article");
     article.className = `sanad-message ${role === "user" ? "from-user" : "from-sanad"}`;
     const paragraph = document.createElement("p");
     paragraph.textContent = text;
     article.append(paragraph);
+    for (const source of Array.isArray(sources) ? sources : []) {
+      if (typeof source?.url !== "string" || !source.url.startsWith("https://")) continue;
+      const link = document.createElement("a");
+      link.href = source.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = `المصدر: ${source.name || "معلومة موثوقة"} ↗`;
+      article.append(link);
+    }
     messages.append(article);
     messages.scrollTop = messages.scrollHeight;
-  }
-
-  function category() {
-    const profile = window.medicalQrProfileContext || {};
-    const text = `${profile.caseType || ""} ${profile.conditions || ""}`.toLowerCase();
-    if (/سكر|سكري|diabet/.test(text)) return "السكري";
-    if (/زهايمر|ألزهايمر|خرف|alzheimer/.test(text)) return "ألزهايمر أو الخرف";
-    if (/توحد|autis/.test(text)) return "التوحد";
-    if (/أصم|اصم|صمم|سمع|deaf/.test(text)) return "الصمم أو ضعف السمع";
-    if (/adhd|فرط الحركة|تشتت الانتباه/.test(text)) return "اضطراب فرط الحركة وتشتت الانتباه";
-    if (/ضغط|hypertension/.test(text)) return "ضغط الدم";
-    if (/طفل|child/.test(text)) return "طفل يحتاج مساعدة أو قد يتوه";
-    return "غير محددة";
   }
 
   async function ask(text) {
@@ -50,14 +46,14 @@
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history.slice(-8), category: category() })
+        body: JSON.stringify({ messages: history.slice(-8) })
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "مش قادر أرد دلوقتي. جرّب كمان شوية.");
       const reply = String(data.reply || "ممكن تعيد صياغة سؤالك؟").slice(0, 2000);
       typing.remove();
       history.push({ role: "assistant", content: reply });
-      addMessage(reply, "assistant");
+      addMessage(reply, "assistant", data.sources);
       if (history.length > 12) history.splice(0, history.length - 12);
     } catch (error) {
       typing.remove();
