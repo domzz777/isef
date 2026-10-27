@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="theme.js" defer></script>
   <script src="public.js" defer></script>
-  <script src="sanad-chat.js?v=2" defer></script>
+  <script src="sanad-chat.js?v=3" defer></script>
 </head>
 <body class="public-body">
   <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">✚</span><span>MEDICAL <b>QR</b><small>ISEF PROJECT</small></span></a><div class="header-tools"><span class="prototype-tag">ملف طوارئ · ISEF</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="تفعيل الوضع الليلي"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">الوضع الليلي</span></button></div></header>
@@ -29,7 +29,7 @@
     <aside id="sanadWidget" class="sanad-widget hidden" aria-label="مساعد سَنَد للمعلومات الصحية">
       <section id="sanadPanel" class="sanad-panel hidden" aria-labelledby="sanadTitle">
         <header class="sanad-head"><span class="sanad-orb" aria-hidden="true">✦</span><div><h2 id="sanadTitle">سَنَد</h2><p>مساعد محادثة ذكي</p></div><button id="sanadClose" class="sanad-close" type="button" aria-label="إغلاق المحادثة">×</button></header>
-        <div class="sanad-disclaimer">ردود الذكاء الاصطناعي قد تخطئ؛ لا تشخّص ولا تصف علاجًا. رسائلك تُرسل إلى Cloudflare AI ولا تُحفظ في ملف السوار. تجنّب كتابة بيانات شخصية.</div>
+        <div class="sanad-disclaimer">عند المحادثة، تُرسل رسائلك ومعها نوع الحالة والحالات الطبية والحساسية وتعليمات الطوارئ المسجلة إلى Cloudflare AI لتوليد الرد. الاسم ورقم الهاتف والتأمين لا تُرسل. ردود الذكاء الاصطناعي قد تخطئ؛ لا تشخّص ولا تصف علاجًا.</div>
         <div id="sanadMessages" class="sanad-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
         <div id="sanadSuggestions" class="sanad-suggestions" aria-label="أسئلة مقترحة"></div>
         <form id="sanadForm" class="sanad-form"><input id="sanadInput" type="text" maxlength="500" autocomplete="off" placeholder="اكتب رسالتك هنا…" aria-label="اكتب رسالتك"><button type="submit" aria-label="إرسال الرسالة">إرسال</button></form>

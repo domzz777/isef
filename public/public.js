@@ -11,6 +11,12 @@
       const p = await response.json();
       $("notFound").classList.remove("show"); $("publicProfile").classList.remove("hidden");
       $("sanadWidget")?.classList.remove("hidden");
+      window.medicalQrProfileContext = {
+        caseType: p.caseType || "",
+        allergies: p.allergies || "",
+        conditions: p.conditions || "",
+        instructions: p.instructions || ""
+      };
       document.dispatchEvent(new CustomEvent("medicalQrProfileReady"));
       show("publicName",p.fullName);
       show("publicMeta",`${p.age ? p.age + " سنة" : "السن غير محدد"} · ${p.bloodType ? "فصيلة الدم: " + p.bloodType : "فصيلة الدم غير مسجلة"}`, "");
