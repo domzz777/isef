@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="theme.js" defer></script>
   <script src="public.js" defer></script>
+  <script src="chatbot.js" defer></script>
 </head>
 <body class="public-body">
   <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">✚</span><span>MEDICAL <b>QR</b><small>ISEF PROJECT</small></span></a><div class="header-tools"><span class="prototype-tag">ملف طوارئ · ISEF</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="تفعيل الوضع الليلي"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">الوضع الليلي</span></button></div></header>
@@ -25,6 +26,16 @@
       <p class="privacy-note">تظهر هنا معلومات الطوارئ المخصصة للمشاركة عبر QR فقط. لا تستخدم بيانات شخصية حقيقية في نموذج العرض.</p>
     </section>
     <section id="notFound" class="panel empty-state"><div class="empty-icon">!</div><h1>الملف غير متاح</h1><p id="notFoundText">قد يكون الرابط غير صحيح، أو أن الملف غير نشط، أو أن البيانات غير موجودة.</p><a class="button secondary" href="index.html">العودة للموقع</a></section>
+    <aside id="sanadWidget" class="sanad-widget hidden" aria-label="مساعد سَنَد للمعلومات الصحية">
+      <section id="sanadPanel" class="sanad-panel hidden" aria-labelledby="sanadTitle">
+        <header class="sanad-head"><span class="sanad-orb" aria-hidden="true">✦</span><div><h2 id="sanadTitle">سَنَد</h2><p>دليل معلومات الحالة</p></div><button id="sanadClose" class="sanad-close" type="button" aria-label="إغلاق المحادثة">×</button></header>
+        <div class="sanad-disclaimer">دليل توعوي بمصادر موثوقة · لا يشخّص ولا يصف علاجًا · المحادثة لا تُحفظ</div>
+        <div id="sanadMessages" class="sanad-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+        <div id="sanadSuggestions" class="sanad-suggestions" aria-label="أسئلة مقترحة"></div>
+        <form id="sanadForm" class="sanad-form"><input id="sanadInput" type="text" maxlength="240" autocomplete="off" placeholder="اسأل عن الحالة أو طريقة المساعدة…" aria-label="اكتب سؤالك"><button type="submit" aria-label="إرسال السؤال">إرسال</button></form>
+      </section>
+      <button id="sanadLauncher" class="sanad-launcher" type="button" aria-expanded="false" aria-controls="sanadPanel"><span class="sanad-launcher-orb" aria-hidden="true">✦</span><span><strong>سَنَد</strong><small>اسأل عن الحالة</small></span><span class="sanad-launcher-arrow" aria-hidden="true">⌃</span></button>
+    </aside>
     <footer>ISEF · MEDICAL QR <span>•</span> نموذج أولي للعرض، ولا يُستخدم بديلًا عن خدمات الطوارئ.</footer>
   </main>
 </body>

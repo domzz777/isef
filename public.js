@@ -10,6 +10,9 @@
       if (!response.ok) throw new Error("الملف غير موجود أو غير نشط.");
       const p = await response.json();
       $("notFound").classList.remove("show"); $("publicProfile").classList.remove("hidden");
+      window.medicalQrProfileContext = {caseType:p.caseType || "", conditions:p.conditions || ""};
+      $("sanadWidget")?.classList.remove("hidden");
+      document.dispatchEvent(new CustomEvent("medicalQrProfileReady"));
       show("publicName",p.fullName);
       show("publicMeta",`${p.age ? p.age + " سنة" : "السن غير محدد"} · ${p.bloodType ? "فصيلة الدم: " + p.bloodType : "فصيلة الدم غير مسجلة"}`, "");
       show("publicContact",[p.contactName,p.contactRelation,p.contactPhone].filter(Boolean).join(" · "));

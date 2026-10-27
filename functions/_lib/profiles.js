@@ -54,6 +54,7 @@ export function publicFromRow(row) {
     fullName: row.full_name,
     age: row.age ?? "",
     bloodType: row.blood_type ?? "",
+    caseType: row.case_type ?? "",
     contactName: row.contact_name ?? "",
     contactPhone: row.contact_phone ?? "",
     contactRelation: row.contact_relation ?? "",
