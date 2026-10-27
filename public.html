@@ -6,25 +6,26 @@
   <meta name="theme-color" content="#102a43">
   <title>Medical QR | معلومات الطوارئ</title>
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js" defer></script>
   <script src="public.js" defer></script>
 </head>
 <body class="public-body">
-  <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">+</span><span>MEDICAL <b>QR</b><small>EMERGENCY PROFILE</small></span></a><span class="prototype-tag">ملف طوارئ</span></header>
+  <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">✚</span><span>MEDICAL <b>QR</b><small>ISEF PROJECT</small></span></a><div class="header-tools"><span class="prototype-tag">ملف طوارئ · ISEF</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="تفعيل الوضع الليلي"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">الوضع الليلي</span></button></div></header>
   <main class="public-shell">
     <div id="publicNotice" class="notice"><strong>مهم:</strong> المعلومات المعروضة مقدمة من صاحب الملف أو المسؤول عنه، ويجب التأكد منها عند الإمكان.</div>
     <section id="publicProfile" class="panel public-card hidden">
       <div class="public-top"><div class="avatar">+</div><div><p class="eyebrow">MEDICAL IDENTIFICATION</p><h1 id="publicName">الاسم</h1><p id="publicMeta" class="muted"></p></div></div>
-      <div class="emergency-banner"><div><strong>جهة اتصال الطوارئ</strong><p id="publicContact"></p></div><a id="callContact" class="button emergency-button" href="#">اتصال الآن</a></div>
+      <div class="emergency-banner"><div class="emergency-copy"><span class="emergency-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.4 2.8a2 2 0 0 1-.6 1.7L7.7 9.4a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 1.7-.6l2.8.4a2 2 0 0 1 1.6 1.9Z"/></svg></span><div><strong>جهة اتصال الطوارئ</strong><p id="publicContact"></p></div></div><a id="callContact" class="button emergency-button" href="#">اتصال بالطوارئ</a></div>
       <div class="medical-grid">
-        <article class="medical-item"><span class="medical-icon">⚠</span><div><h3>الحساسية</h3><p id="publicAllergies"></p></div></article>
-        <article class="medical-item"><span class="medical-icon">♡</span><div><h3>حالات طبية مهمة</h3><p id="publicConditions"></p></div></article>
-        <article class="medical-item full-item"><span class="medical-icon">✚</span><div><h3>تعليمات للطوارئ</h3><p id="publicInstructions"></p></div></article>
-        <article class="medical-item full-item"><span class="medical-icon">▦</span><div><h3>التأمين الصحي</h3><p id="publicInsurance"></p></div></article>
+        <article class="medical-item"><span class="medical-icon allergy-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 9 17H3L12 3Z"/><path d="M12 9v4m0 3h.01"/></svg></span><div><h3>الحساسية</h3><p id="publicAllergies"></p></div></article>
+        <article class="medical-item"><span class="medical-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/><path d="M3 12h4l2-3 3.5 6 2-3H21"/></svg></span><div><h3>حالات طبية مهمة</h3><p id="publicConditions"></p></div></article>
+        <article class="medical-item full-item"><span class="medical-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg></span><div><h3>تعليمات للطوارئ</h3><p id="publicInstructions"></p></div></article>
+        <article class="medical-item full-item"><span class="medical-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4m-2-2v4m5-1h4m-4 4h4"/></svg></span><div><h3>التأمين الصحي</h3><p id="publicInsurance"></p></div></article>
       </div>
-      <p class="privacy-note">التفاصيل الطبية الإضافية غير معروضة في هذه الصفحة. هذه النسخة التجريبية لا توفر تخزينًا آمنًا للبيانات.</p>
+      <p class="privacy-note">تظهر هنا معلومات الطوارئ المخصصة للمشاركة عبر QR فقط. لا تستخدم بيانات شخصية حقيقية في نموذج العرض.</p>
     </section>
-    <section id="notFound" class="panel empty-state"><div class="empty-icon">!</div><h1>الملف غير متاح</h1><p id="notFoundText">قد يكون الرابط غير صحيح، أو أن الملف غير نشط، أو أن البيانات غير موجودة على هذا الجهاز.</p><a class="button secondary" href="index.html">العودة للوحة التجريبية</a></section>
-    <footer>في حالة الطوارئ الفعلية، اتصل بخدمات الطوارئ المحلية. لا تعتمد على هذا النموذج التجريبي وحده.</footer>
+    <section id="notFound" class="panel empty-state"><div class="empty-icon">!</div><h1>الملف غير متاح</h1><p id="notFoundText">قد يكون الرابط غير صحيح، أو أن الملف غير نشط، أو أن البيانات غير موجودة.</p><a class="button secondary" href="index.html">العودة للموقع</a></section>
+    <footer>ISEF · MEDICAL QR <span>•</span> نموذج أولي للعرض، ولا يُستخدم بديلًا عن خدمات الطوارئ.</footer>
   </main>
 </body>
 </html>

@@ -6,13 +6,14 @@
   <meta name="theme-color" content="#102a43">
   <title>Medical QR | لوحة إدارة السوار الطبي</title>
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="index.html"><span class="brand-mark">✚</span><span>MEDICAL <b>QR</b><small>ISEF PROJECT</small></span></a>
-    <span class="prototype-tag">مشروع ISEF</span>
+    <div class="header-tools"><span class="prototype-tag">مشروع ISEF</span><button class="theme-toggle" id="themeToggle" type="button" aria-label="تفعيل الوضع الليلي"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">الوضع الليلي</span></button></div>
   </header>
 
   <main class="shell">
