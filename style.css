@@ -779,3 +779,52 @@ footer { color:var(--muted); }
 @media(prefers-reduced-motion:reduce) {
   *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
 }
+
+/* Holographic silicone bracelet: a soft band loop with a mounted, scannable QR plate. */
+.device-card { width:280px; height:300px; }
+.device-face { overflow:visible; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.device-face::before { display:none; }
+.device-front { gap:0; }
+.bracelet-band,.bracelet-back-band { position:absolute; top:50%; left:50%; width:300px; height:190px; border-radius:50%; background:radial-gradient(ellipse at center,transparent 0 37%,rgba(10,25,43,.98) 38% 42%,#14647c 43%,#81f7e4 48%,#33bad1 53%,#226383 60%,rgba(21,66,89,.8) 63%,transparent 69%); transform:translate(-50%,-50%) rotate(-15deg) rotateX(37deg); filter:drop-shadow(0 14px 16px rgba(46,215,219,.22)); }
+.bracelet-band::after,.bracelet-back-band::after { position:absolute; inset:12px 4px -9px; border:1px solid rgba(155,255,239,.36); border-radius:50%; content:""; }
+.bracelet-band { animation:band-glint 5.5s ease-in-out infinite; }
+.bracelet-rivet { position:absolute; z-index:2; top:51%; width:9px; height:9px; border:1px solid #b9fff2; border-radius:50%; background:radial-gradient(circle at 35% 30%,#efffff,#34b9ca 72%); box-shadow:0 0 11px rgba(96,245,225,.7),inset 0 1px 2px rgba(255,255,255,.8); }
+.rivet-one { left:14%; }.rivet-two { right:14%; }
+.bracelet-qr-plate { position:relative; z-index:3; display:flex; width:158px; height:194px; flex-direction:column; align-items:center; justify-content:center; gap:9px; padding:14px 12px; overflow:hidden; border:1px solid rgba(164,255,243,.8); border-radius:22px 22px 25px 8px; color:#e9feff; background:linear-gradient(148deg,rgba(85,210,221,.32),rgba(15,42,64,.98) 28%,rgba(11,27,44,.98) 76%,rgba(62,183,197,.3)); box-shadow:0 18px 38px rgba(0,0,0,.45),0 0 24px rgba(62,222,218,.26),inset 0 1px rgba(255,255,255,.58),inset 0 0 0 5px rgba(161,251,237,.055); transform:translateZ(38px) rotate(2deg); }
+.bracelet-qr-plate::before { position:absolute; inset:7px; border:1px solid rgba(165,255,242,.18); border-radius:16px 16px 20px 5px; content:""; pointer-events:none; }
+.bracelet-qr-plate::after { position:absolute; top:-60%; left:-90%; width:70%; height:220%; background:linear-gradient(90deg,transparent,rgba(224,255,255,.14),transparent); content:""; pointer-events:none; transform:rotate(24deg); animation:plate-shimmer 6s ease-in-out infinite; }
+.bracelet-qr-plate .device-brand { z-index:1; align-self:auto; color:#9cfff0; font-size:10px; }
+.bracelet-qr-plate .device-brand i { color:#b6cfdf; font-size:7px; }
+.device-qr { z-index:1; flex:0 0 124px; width:124px; min-width:124px; height:124px; min-height:124px; border:7px solid #fff; border-radius:4px; box-shadow:0 6px 17px rgba(0,0,0,.26); }
+#heroDemoQr > img { width:110px!important; max-width:110px!important; height:110px!important; max-height:110px!important; }
+.bracelet-qr-plate .device-scan { z-index:1; width:auto; gap:13px; align-items:center; color:#b4ccdc; font-size:7px; }
+.bracelet-qr-plate .device-scan b { color:#8bffea; }
+.device-back { align-items:center; justify-content:center; transform:rotateY(180deg); }
+.bracelet-back-band { width:270px; height:172px; opacity:.86; transform:translate(-50%,-50%) rotate(13deg) rotateX(42deg); }
+.device-back-panel { position:relative; z-index:2; display:flex; width:232px; min-height:220px; flex-direction:column; align-items:flex-start; justify-content:center; gap:12px; padding:24px; border:1px solid rgba(142,246,230,.58); border-radius:25px 25px 26px 8px; color:#effbff; background:linear-gradient(145deg,rgba(29,69,88,.94),rgba(11,23,39,.96)); box-shadow:0 20px 45px rgba(0,0,0,.46),0 0 35px rgba(83,226,245,.2),inset 0 1px rgba(255,255,255,.2); transform:translateZ(38px); }
+.device-back-icon { width:40px; height:40px; border-radius:14px; }
+.device-back-panel strong { font-size:20px; line-height:1.45; }
+.device-back-panel > span:not(.device-back-icon) { color:#bbd2df; font-size:10px; line-height:1.7; }
+.device-back-panel .device-back-mark { margin-top:4px; color:#89f0df!important; font-size:7px!important; letter-spacing:.08em; }
+@keyframes band-glint { 0%,100% { filter:drop-shadow(0 14px 16px rgba(46,215,219,.2)) brightness(1); } 50% { filter:drop-shadow(0 14px 24px rgba(46,215,219,.4)) brightness(1.12); } }
+@keyframes plate-shimmer { 0%,58%,100% { left:-90%; opacity:0; } 68% { opacity:1; } 88% { left:120%; opacity:0; } }
+@media(max-width:850px) {
+  .device-card { width:250px; height:280px; scale:.88; }
+  .bracelet-band,.bracelet-back-band { width:260px; height:164px; }
+  .bracelet-qr-plate { width:146px; height:180px; }
+  .bracelet-qr-plate .device-qr { flex-basis:112px; width:112px; min-width:112px; height:112px; min-height:112px; }
+  #heroDemoQr > img { width:98px!important; max-width:98px!important; height:98px!important; max-height:98px!important; }
+}
+@media(max-width:620px) {
+  .device-card { width:190px; height:220px; scale:.62; }
+  .bracelet-band,.bracelet-back-band { width:210px; height:142px; }
+  .bracelet-qr-plate { width:132px; height:164px; }
+  .bracelet-qr-plate .device-qr { flex-basis:98px; width:98px; min-width:98px; height:98px; min-height:98px; border-width:6px; }
+  #heroDemoQr > img { width:86px!important; max-width:86px!important; height:86px!important; max-height:86px!important; }
+  .bracelet-rivet { display:none; }
+  .device-back-panel { width:220px; min-height:210px; }
+}
+@media(max-width:380px) {
+  .device-card { scale:.52; }
+  .bracelet-band,.bracelet-back-band { width:200px; }
+}
