@@ -4,11 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102a43">
+  <meta name="description" content="ISEF Medical QR — سوار ذكي يوصّل معلومات الطوارئ لمن يقدر يساعد.">
   <title>Medical QR | لوحة إدارة السوار الطبي</title>
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css?v=6">
   <script src="theme.js?v=2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-  <script src="app.js?v=3" defer></script>
+  <script src="app.js?v=4" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -19,13 +21,25 @@
   <main class="shell">
     <section id="dashboardView">
       <div class="hero">
-        <div>
-          <p class="eyebrow">ISEF · السوار الطبي الذكي</p>
-          <h1>معلومات مهمة، وقت ما تكون مهمة.</h1>
-          <p class="hero-copy">أنشئ ملف طوارئ لكل سوار، وولّد QR يفتح صفحة معلومات الطوارئ.</p>
+        <div class="hero-content">
+          <p class="eyebrow"><span class="live-dot"></span> ISEF · السوار الطبي الذكي</p>
+          <h1>امسح. اعرف.<br><em>ساعد.</em></h1>
+          <p class="hero-copy">لحظة واحدة قد تصنع فرقًا. سوار ذكي يوصّل معلومات الطوارئ لمن يقدر يساعد.</p>
+          <div class="hero-actions"><a class="button primary" href="public.html?token=hJUFYrJpoEZxVG4Ek-WJwxzL1ZgLesiOM_x67dfUxWM" target="_blank" rel="noopener">شاهد التجربة التفاعلية <span aria-hidden="true">↗</span></a><a class="hero-secondary" href="#loginPanel">إدارة ملفات السوار <span aria-hidden="true">↓</span></a></div>
+          <p class="hero-demo-note">ملف المحاكاة للعرض فقط · لا يحتوي بيانات شخص حقيقي</p>
         </div>
-        <div class="hero-symbol" aria-hidden="true"><svg viewBox="0 0 128 128" focusable="false"><rect x="15" y="22" width="98" height="84" rx="17"/><circle cx="48" cy="55" r="19"/><path d="M48 43v24M36 55h24M80 48h18M80 62h18M31 88h66"/></svg></div>
+        <button class="hero-device" id="braceletFlip" type="button" aria-label="اقلب السوار لمشاهدة طريقة استخدامه" aria-pressed="false">
+          <span class="device-halo" aria-hidden="true"></span><span class="device-card">
+            <span class="device-face device-front"><span class="device-brand">ISEF <i>MEDICAL ID</i></span><span class="device-qr" id="heroDemoQr" role="img" aria-label="QR تجريبي يفتح ملف المحاكاة"></span><span class="device-scan">SCAN FOR HELP <b>↗</b></span><span class="device-corner" aria-hidden="true">✳</span></span>
+            <span class="device-face device-back"><span class="device-back-icon" aria-hidden="true">⌁</span><strong>معلومة مهمة<br>وقت ما تكون مهمة</strong><span>امسح الرمز لعرض ملف الطوارئ</span><span class="device-back-mark">ISEF · SMART MEDICAL BRACELET</span></span>
+          </span><span class="device-hint"><span class="device-hint-icon">↻</span> اضغط وشوف الفكرة</span>
+        </button>
       </div>
+
+      <section class="how-it-works" aria-label="طريقة عمل السوار">
+        <div class="how-heading"><p class="eyebrow">من السوار للمساعدة</p><h2>ثلاث خطوات. معلومة في وقتها.</h2></div>
+        <div class="how-steps"><article class="how-step"><span>01</span><div><strong>ارتدِ السوار</strong><p>QR مطبوع ومثبت على السوار.</p></div><i aria-hidden="true">⌁</i></article><article class="how-step"><span>02</span><div><strong>امسح الرمز</strong><p>بكاميرا أي هاتف متصل بالإنترنت.</p></div><i aria-hidden="true">▦</i></article><article class="how-step"><span>03</span><div><strong>اعرف كيف تساعد</strong><p>معلومات الطوارئ وجهة الاتصال بوضوح.</p></div><i aria-hidden="true">✳</i></article></div>
+      </section>
 
 
       <div class="section-heading">

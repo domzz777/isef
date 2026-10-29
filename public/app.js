@@ -122,6 +122,13 @@
   });
   $("newProfileBtn").addEventListener("click", openEditor);
   $("emptyCreateBtn").addEventListener("click", openEditor);
+  const braceletFlip = $("braceletFlip");
+  const heroDemoQr = $("heroDemoQr");
+  if (heroDemoQr && window.QRCode) new QRCode(heroDemoQr, {text:new URL("public.html?token=hJUFYrJpoEZxVG4Ek-WJwxzL1ZgLesiOM_x67dfUxWM", window.location.href).href,width:120,height:120,colorDark:"#102133",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+  braceletFlip?.addEventListener("click", () => {
+    const flipped = braceletFlip.classList.toggle("is-flipped");
+    braceletFlip.setAttribute("aria-pressed", String(flipped));
+  });
   $("backBtn").addEventListener("click", () => { show("dashboardView"); renderList(); });
   $("cancelBtn").addEventListener("click", () => { show("dashboardView"); renderList(); });
   $("detailBackBtn").addEventListener("click", () => { show("dashboardView"); renderList(); });
