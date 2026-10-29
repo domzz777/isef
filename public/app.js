@@ -133,9 +133,9 @@
     catch(error) { alert(readableError(error)); }
   });
   $("searchInput").addEventListener("input", renderList);
-  $("downloadQrBtn").addEventListener("click", () => {
+  function getQrImageUrl(){
     const source = $("qrcode").querySelector("canvas") || $("qrcode").querySelector("img");
-    if (!source) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
+    if (!source) return "";
     const size = 1200;
     const quietZone = 160;
     const output = document.createElement("canvas");
@@ -146,7 +146,21 @@
     context.fillRect(0, 0, size, size);
     context.imageSmoothingEnabled = false;
     context.drawImage(source, quietZone, quietZone, size - quietZone * 2, size - quietZone * 2);
-    const imageUrl = output.toDataURL("image/png");
+    return output.toDataURL("image/png");
+  }
+  $("quickDownloadQrBtn").addEventListener("click", () => {
+    const imageUrl = getQrImageUrl();
+    if (!imageUrl) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
+    const a = document.createElement("a");
+    a.href = imageUrl;
+    a.download = "medical-qr-4x4cm.png";
+    document.body.append(a);
+    a.click();
+    a.remove();
+  });
+  $("downloadQrBtn").addEventListener("click", () => {
+    const imageUrl = getQrImageUrl();
+    if (!imageUrl) { alert("QR لسه متولدش. تأكد من اتصال الإنترنت."); return; }
     const printWindow = window.open("", "_blank", "popup,width=500,height=600");
     if (!printWindow) {
       const a = document.createElement("a");

@@ -560,7 +560,8 @@ footer { color:var(--muted); }
 .qr-box img,.qr-box canvas { width:min(100%,220px); height:auto; image-rendering:pixelated; }
 .qr-area h4 { margin-bottom:9px; color:var(--text); font-size:16px; }
 .qr-area .field-note { margin:8px 0 14px; line-height:1.8; }
-.qr-area #downloadQrBtn { min-height:42px; font-weight:800; }
+.qr-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.qr-area .qr-actions .button { min-height:42px; font-weight:800; }
 .url-text { margin-top:12px; padding:9px 10px; border:1px solid var(--line); border-radius:9px; background:color-mix(in srgb,var(--surface) 85%,var(--blue)); line-height:1.6; }
 .detail-summary-panel { padding:22px; }
 .summary-heading { display:flex; align-items:center; gap:12px; padding-bottom:17px; border-bottom:1px solid var(--line); }
