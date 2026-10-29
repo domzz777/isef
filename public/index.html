@@ -7,7 +7,7 @@
   <meta name="description" content="ISEF Medical QR — سوار ذكي يوصّل معلومات الطوارئ لمن يقدر يساعد.">
   <title>Medical QR | لوحة إدارة السوار الطبي</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
   <script src="theme.js?v=2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="app.js?v=4" defer></script>
@@ -119,7 +119,7 @@
       <div class="detail-grid">
         <section class="panel detail-profile-panel"><p class="eyebrow detail-kicker">ملف السوار</p><div class="panel-head"><div><h3 id="detailName">اسم الشخص</h3><p id="detailMeta"></p></div><span class="status-pill" id="detailStatus">نشط</span></div>
           <div class="detail-actions"><button class="button primary" id="openPublicBtn">عرض صفحة QR العامة</button><button class="button secondary" id="editProfileBtn">تعديل البيانات</button><button class="button danger-outline" id="deleteProfileBtn">حذف الملف</button></div>
-          <div class="qr-area"><div id="qrcode" class="qr-box"></div><div><h4>QR Code للسوار</h4><p class="field-note">نزّل صورة QR فورًا، أو اطبعها بالمقاس المحدد 4×4 سم. سيب الإطار الأبيض حول الكود عشان الموبايل يمسحه بسهولة.</p><div class="qr-actions"><button class="button primary" id="quickDownloadQrBtn">تنزيل QR فورًا</button><button class="button secondary" id="downloadQrBtn">طباعة 4×4 سم</button></div><p id="qrUrl" class="url-text"></p></div></div>
+          <div class="qr-area"><div id="qrcode" class="qr-box"></div><div><h4>QR Code للسوار</h4><p class="field-note">نزّل صورة QR أو اطبعها بمقاس 4×4 سم. اترك الإطار الأبيض حول الكود ليسهل مسحه.</p><div class="qr-actions"><button class="button primary" id="quickDownloadQrBtn"><svg class="qr-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 17v3h14v-3"/></svg><span>تنزيل QR</span></button><button class="button secondary" id="downloadQrBtn"><svg class="qr-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4V9h16v9h-2M7 14h10v7H7zM17 12h.01"/></svg><span>طباعة 4×4 سم</span></button></div><p id="qrUrl" class="url-text"></p></div></div>
         </section>
         <section class="panel detail-summary-panel"><div class="summary-heading"><span class="summary-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 13h8M9 17h8"/></svg></span><div><h3>ملخص البيانات</h3><p>المعلومات المسجلة في الملف</p></div></div><div id="detailSummary" class="summary-list"></div></section>
       </div>
