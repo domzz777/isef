@@ -7,7 +7,7 @@
   <meta name="description" content="ISEF Medical QR — سوار ذكي يوصّل معلومات الطوارئ لمن يقدر يساعد.">
   <title>Medical QR | لوحة إدارة السوار الطبي</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="style.css?v=10">
   <script src="theme.js?v=2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="app.js?v=4" defer></script>
@@ -29,35 +29,9 @@
           <p class="hero-demo-note">ملف المحاكاة للعرض فقط · لا يحتوي بيانات شخص حقيقي</p>
         </div>
         <button class="hero-device" id="braceletFlip" type="button" aria-label="اقلب السوار لمشاهدة طريقة استخدامه" aria-pressed="false">
-          <span class="device-card">
-            <span class="device-face device-front">
-              <svg class="bracelet-art" viewBox="0 0 360 280" aria-hidden="true">
-                <defs>
-                  <linearGradient id="siliconeBack" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#344356"/><stop offset=".42" stop-color="#111c2a"/><stop offset=".7" stop-color="#202e3e"/><stop offset="1" stop-color="#0b1522"/></linearGradient>
-                  <linearGradient id="siliconeFront" x1="0" y1="0" x2=".1" y2="1"><stop stop-color="#3c4b5b"/><stop offset=".18" stop-color="#1e2b3b"/><stop offset=".65" stop-color="#101b2a"/><stop offset="1" stop-color="#28384a"/></linearGradient>
-                  <linearGradient id="siliconeEdge" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#81909f" stop-opacity=".24"/><stop offset=".5" stop-color="#d0dce0" stop-opacity=".06"/><stop offset="1" stop-color="#78a5a8" stop-opacity=".2"/></linearGradient>
-                  <filter id="braceletShadow" x="-20%" y="-20%" width="140%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dy="8"/><feComponentTransfer><feFuncA type="linear" slope=".35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                </defs>
-                <g filter="url(#braceletShadow)">
-                  <path fill="url(#siliconeBack)" fill-rule="evenodd" d="M20 137C20 70 90 25 180 25s160 45 160 112-70 112-160 112S20 204 20 137Zm27 0c0 49 58 81 133 81s133-32 133-81-58-83-133-83S47 88 47 137Z"/>
-                  <path fill="none" stroke="url(#siliconeEdge)" stroke-width="3" d="M23 133C25 73 92 30 180 30s155 43 157 103"/>
-                  <path fill="url(#siliconeFront)" stroke="#506071" stroke-opacity=".7" stroke-width="1.5" d="M21 133c30-14 75-21 159-21s129 7 159 21v44c-30 42-75 63-159 63s-129-21-159-63v-44Z"/>
-                  <path fill="none" stroke="url(#siliconeEdge)" stroke-width="2" d="M25 140c30-14 75-21 155-21s125 7 155 21"/>
-                  <path fill="none" stroke="#070e17" stroke-opacity=".72" stroke-width="3" d="M26 178c18 36 78 60 154 60s136-24 154-60"/>
-                </g>
-              </svg>
-              <span class="bracelet-qr-plate"><span class="device-qr" id="heroDemoQr" role="img" aria-label="QR تجريبي يفتح ملف المحاكاة"></span></span>
-            </span>
-            <span class="device-face device-back">
-              <svg class="bracelet-art bracelet-art-back" viewBox="0 0 360 280" aria-hidden="true">
-                <defs><linearGradient id="siliconeBackside" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#303e50"/><stop offset=".45" stop-color="#101a28"/><stop offset="1" stop-color="#263648"/></linearGradient></defs>
-                <path fill="url(#siliconeBackside)" fill-rule="evenodd" stroke="#586777" stroke-opacity=".55" stroke-width="2" d="M20 137C20 70 90 25 180 25s160 45 160 112-70 112-160 112S20 204 20 137Zm27 0c0 49 58 81 133 81s133-32 133-81-58-83-133-83S47 88 47 137Z"/>
-                <path fill="#0c1522" stroke="#627181" stroke-width="2" d="M153 115h54v45h-54z"/>
-                <circle cx="170" cy="137" r="4" fill="#82909b"/><circle cx="190" cy="137" r="4" fill="#82909b"/>
-                <path fill="none" stroke="#8998a6" stroke-opacity=".25" stroke-width="3" d="M24 133C29 74 94 31 180 31s151 43 156 102"/>
-              </svg>
-              <span class="bracelet-back-mark">ISEF · سوار سيليكون طبي</span>
-            </span>
+          <span class="device-halo" aria-hidden="true"></span><span class="device-card">
+            <span class="device-face device-front"><span class="bracelet-band" aria-hidden="true"></span><span class="bracelet-rivet rivet-one" aria-hidden="true"></span><span class="bracelet-rivet rivet-two" aria-hidden="true"></span><span class="bracelet-qr-plate"><span class="device-brand">ISEF <i>SILICONE ID</i></span><span class="device-qr" id="heroDemoQr" role="img" aria-label="QR تجريبي يفتح ملف المحاكاة"></span><span class="device-scan">SCAN FOR HELP <b>↗</b></span></span></span>
+            <span class="device-face device-back"><span class="bracelet-back-band" aria-hidden="true"></span><span class="device-back-panel"><span class="device-back-icon" aria-hidden="true">⌁</span><strong>معلومة مهمة<br>وقت ما تكون مهمة</strong><span>امسح الرمز لعرض ملف الطوارئ</span><span class="device-back-mark">ISEF · SMART MEDICAL BRACELET</span></span></span>
           </span><span class="device-hint"><span class="device-hint-icon">↻</span> اضغط وشوف الفكرة</span>
         </button>
       </div>
