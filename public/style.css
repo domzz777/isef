@@ -900,3 +900,27 @@ footer { color:var(--muted); }
   .rivet-one { left:calc(50% - 68px); }
   .rivet-two { right:calc(50% - 68px); }
 }
+
+/* Reference-led product render: a matte silicone loop with its QR printed directly on the front. */
+.device-card { width:340px; height:285px; }
+.device-face { overflow:visible; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.device-face::before,.device-halo { display:none; }
+.bracelet-art { position:absolute; top:50%; left:50%; width:100%; height:100%; overflow:visible; transform:translate(-50%,-50%); }
+.device-front { display:block; }
+.bracelet-qr-plate { position:absolute; top:66%; left:50%; z-index:4; display:block; width:76px; height:76px; padding:0; overflow:visible; border:0; border-radius:0; background:transparent; box-shadow:none; transform:translate(-50%,-50%) translateZ(2px); }
+.bracelet-qr-plate::before,.bracelet-qr-plate::after { display:none; }
+.device-qr { position:relative; z-index:1; display:block; width:76px; min-width:76px; height:76px; min-height:76px; border:0; border-radius:1px; background:#fff; box-shadow:none; }
+#heroDemoQr > img { position:absolute!important; inset:0!important; display:block!important; width:76px!important; max-width:76px!important; height:76px!important; max-height:76px!important; object-fit:contain; image-rendering:pixelated; }
+.device-back { display:block; background:transparent; }
+.bracelet-back-mark { position:absolute; top:50%; left:50%; z-index:1; padding:6px 10px; border:1px solid rgba(153,170,187,.17); border-radius:20px; color:#8191a2; background:rgba(9,17,27,.55); font-size:8px; white-space:nowrap; transform:translate(-50%,-50%); }
+@media(max-width:850px) {
+  .device-card { width:270px; height:255px; scale:.88; }
+  .bracelet-qr-plate,.device-qr { width:68px; min-width:68px; height:68px; min-height:68px; }
+  #heroDemoQr > img { width:68px!important; max-width:68px!important; height:68px!important; max-height:68px!important; }
+}
+@media(max-width:620px) {
+  .device-card { width:218px; height:220px; scale:.68; }
+  .bracelet-qr-plate,.device-qr { width:62px; min-width:62px; height:62px; min-height:62px; }
+  #heroDemoQr > img { width:62px!important; max-width:62px!important; height:62px!important; max-height:62px!important; }
+}
+@media(max-width:380px) { .device-card { scale:.58; } }
