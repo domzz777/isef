@@ -865,3 +865,38 @@ footer { color:var(--muted); }
   .rivet-one { left:calc(50% - 68px); }
   .rivet-two { right:calc(50% - 68px); }
 }
+
+/* Product-first wearable silhouette: calm silicone, a compact mounted QR plate, and a restrained holographic edge. */
+.device-halo { display:none; }
+.bracelet-band,.bracelet-back-band {
+  background:linear-gradient(155deg,#a9c7c8 0%,#507885 13%,#1d4154 28%,#426e7c 42%,#a6c9c0 49%,#356a7b 58%,#183b50 75%,#6e9da3 91%,#2a5062 100%);
+  -webkit-mask:radial-gradient(ellipse at center,transparent 0 40%,#000 42% 58%,transparent 60%);
+  mask:radial-gradient(ellipse at center,transparent 0 40%,#000 42% 58%,transparent 60%);
+  filter:drop-shadow(0 9px 11px rgba(0,0,0,.42)) drop-shadow(0 0 7px rgba(93,216,213,.18));
+}
+.bracelet-band::after,.bracelet-back-band::after { inset:11px 9px -5px; border-color:rgba(201,255,241,.25); }
+.bracelet-band { animation:band-glint 7s ease-in-out infinite; }
+.bracelet-back-band { opacity:.74; }
+.bracelet-connector { display:none; }
+.device-rivet { display:none; }
+.bracelet-rivet { width:8px; height:8px; top:calc(51% - 4px); }
+.rivet-one { left:calc(50% - 83px); }
+.rivet-two { right:calc(50% - 83px); }
+.bracelet-qr-plate {
+  border:1px solid rgba(169,239,224,.7);
+  border-radius:18px 18px 20px 8px;
+  background:linear-gradient(145deg,#315767,#172f42 58%,#244a58);
+  box-shadow:0 14px 28px rgba(0,0,0,.4),0 0 16px rgba(89,203,201,.14),inset 0 1px rgba(255,255,255,.32),inset 0 -5px 12px rgba(1,14,29,.4);
+}
+.bracelet-qr-plate::before { border-color:rgba(213,255,238,.13); }
+.bracelet-qr-plate::after { opacity:.42; }
+.device-halo + .device-card { filter:drop-shadow(0 5px 8px rgba(75,199,202,.1)); }
+@keyframes band-glint { 0%,100% { filter:drop-shadow(0 9px 11px rgba(0,0,0,.4)) drop-shadow(0 0 5px rgba(93,216,213,.13)); } 50% { filter:drop-shadow(0 10px 12px rgba(0,0,0,.4)) drop-shadow(0 0 9px rgba(93,216,213,.25)); } }
+@media(max-width:850px) {
+  .rivet-one { left:calc(50% - 76px); }
+  .rivet-two { right:calc(50% - 76px); }
+}
+@media(max-width:620px) {
+  .rivet-one { left:calc(50% - 68px); }
+  .rivet-two { right:calc(50% - 68px); }
+}
