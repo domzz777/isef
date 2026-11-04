@@ -3,20 +3,251 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#102a43">
-  <meta http-equiv="refresh" content="0;url=https://isef.pages.dev/">
-  <link rel="canonical" href="https://isef.pages.dev/">
-  <title>Medical QR | النسخة السحابية</title>
-  <script>window.location.replace("https://isef.pages.dev/");</script>
-  <style>
-    :root{font-family:Tahoma,Arial,sans-serif;color:#243b53;background:#f3f7fa}body{margin:0;min-height:100vh;display:grid;place-items:center}.card{max-width:520px;margin:24px;padding:32px;background:#fff;border:1px solid #d9e2ec;border-radius:18px;text-align:center;box-shadow:0 12px 32px #102a4312}h1{color:#102a43;font-size:25px}p{line-height:1.8;color:#627d98}.button{display:inline-block;padding:12px 20px;border-radius:10px;background:#17658a;color:#fff;text-decoration:none;font-weight:bold}
-  </style>
+  <meta name="theme-color" content="#0a8f9e">
+  <title>MEDICAL QR · لوحة إدارة السوار الطبي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css?v=11">
+  <script src="theme.js?v=4"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="app.js?v=10" defer></script>
 </head>
 <body>
-  <main class="card">
-    <h1>تم نقل Medical QR إلى النسخة السحابية</h1>
-    <p>جاري فتح الموقع الذي يحفظ الملفات على الإنترنت ويتيح الوصول إليها من أجهزة مختلفة.</p>
-    <a class="button" href="https://isef.pages.dev/">افتح Medical QR</a>
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M24 3 6 10v12c0 11.1 7.5 19 18 23 10.5-4 18-11.9 18-23V10L24 3Z"/><path class="brand-mark-cross" d="M20 12h8v8h8v8h-8v8h-8v-8h-8v-8h8z"/></svg></span>
+      <span class="brand-text">MEDICAL <b>QR</b><small>ISEF · SMART BRACELET</small></span>
+    </a>
+    <div class="header-tools">
+      <span class="live-chip"><i aria-hidden="true"></i> نظام الطوارئ</span>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="الوضع الليلي"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">الوضع الليلي</span></button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section id="dashboardView">
+      <div id="dashboardContent">
+        <section class="hero">
+          <div class="hero-copy-wrap">
+            <p class="eyebrow">ISEF · السوار الطبي الذكي</p>
+            <h1>سوار واحد.<br><span>ملف طوارئ كامل.</span></h1>
+            <p class="hero-copy">امسح الكود الموجود على السوار، وتظهر معلومات الطوارئ في ثانية — بدون تطبيق وبدون تسجيل.</p>
+            <div class="hero-points" aria-label="مميزات النظام">
+              <span>مسح فوري</span><span>يعمل على أي موبايل</span><span>بيانات محدّثة</span>
+            </div>
+            <div class="hero-actions">
+              <button class="button primary" id="heroAddBtn" type="button">＋ إضافة ملف جديد</button>
+              <a class="button ghost" href="#profilesSection">عرض الملفات</a>
+            </div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <svg viewBox="0 0 400 320" focusable="false">
+              <defs>
+                <linearGradient id="bandGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#17c3ca"/><stop offset=".55" stop-color="#0a8f9e"/><stop offset="1" stop-color="#095f7d"/>
+                </linearGradient>
+                <linearGradient id="plateGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eaf8f9"/>
+                </linearGradient>
+                <filter id="heroGlow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation="12" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <ellipse cx="205" cy="292" rx="128" ry="13" fill="rgba(6,50,60,.14)"/>
+              <circle cx="338" cy="64" r="7" fill="#2fd0c0"/>
+              <circle cx="52" cy="240" r="5" fill="#0a8f9e" opacity=".45"/>
+              <circle cx="352" cy="236" r="4" fill="#0a8f9e" opacity=".3"/>
+              <path d="M44 96c20-22 44-38 72-48" fill="none" stroke="rgba(10,143,158,.30)" stroke-width="1.5" stroke-dasharray="5 7" stroke-linecap="round"/>
+              <path d="M322 120c32 66-4 136-82 154-82 18-166-22-178-94" fill="none" stroke="url(#bandGrad)" stroke-width="46" stroke-linecap="round" filter="url(#heroGlow)"/>
+              <path d="M310 132c22 52-8 104-70 120" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="9" stroke-linecap="round"/>
+              <g transform="rotate(-7 200 150)">
+                <rect x="112" y="87" width="176" height="126" rx="24" fill="url(#plateGrad)" stroke="rgba(6,54,64,.15)" filter="url(#heroGlow)"/>
+                <g fill="#0c2b35">
+                  <rect x="130" y="105" width="27" height="27" rx="6"/><rect x="135.5" y="110.5" width="16" height="16" rx="3" fill="#fff"/><rect x="139.5" y="114.5" width="8" height="8" rx="2"/>
+                  <rect x="168" y="105" width="27" height="27" rx="6"/><rect x="173.5" y="110.5" width="16" height="16" rx="3" fill="#fff"/><rect x="177.5" y="114.5" width="8" height="8" rx="2"/>
+                  <rect x="130" y="143" width="27" height="27" rx="6"/><rect x="135.5" y="148.5" width="16" height="16" rx="3" fill="#fff"/><rect x="139.5" y="152.5" width="8" height="8" rx="2"/>
+                  <rect x="168" y="143" width="10" height="10" rx="2.5"/><rect x="182" y="153" width="10" height="10" rx="2.5"/><rect x="168" y="166" width="7" height="7" rx="1.8"/><rect x="182" y="139" width="7" height="7" rx="1.8"/>
+                </g>
+                <rect x="206" y="107" width="62" height="9" rx="4.5" fill="#0a8f9e" opacity=".9"/>
+                <rect x="206" y="122" width="46" height="6" rx="3" fill="#8aa6b1"/>
+                <rect x="206" y="140" width="38" height="19" rx="9.5" fill="#fff0f2" stroke="#e6b3bb"/>
+                <text x="225" y="153.5" text-anchor="middle" font-family="Space Grotesk, Cairo, sans-serif" font-size="10" font-weight="700" fill="#c8364b" direction="ltr" unicode-bidi="bidi-override">O+</text>
+                <path d="M146 196h16l5-9 7 17 5-8h19" fill="none" stroke="#12b5ae" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="252" y="199" text-anchor="middle" font-family="Cairo, Tahoma, sans-serif" font-size="9.5" font-weight="700" fill="#45606c">امسح للطوارئ</text>
+              </g>
+              <path d="M330 176a10 10 0 0 1 14 8" fill="none" stroke="rgba(47,208,192,.5)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </section>
+
+        <div class="stats">
+          <article class="stat-card">
+            <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 9h16M9 5v4"/></svg></span>
+            <span class="stat-label">إجمالي الملفات</span>
+            <strong id="profileCount">0</strong>
+            <small id="profileCountNote">ملف مسجل</small>
+          </article>
+          <article class="stat-card accent-green">
+            <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 7 9 18l-5-5"/></svg></span>
+            <span class="stat-label">ملفات نشطة</span>
+            <strong id="activeCount">0</strong>
+            <small id="activeNote">جاهزة للمسح</small>
+          </article>
+          <article class="stat-card accent-red">
+            <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Z"/><path d="M12 9v5M12 17.5v.5"/></svg></span>
+            <span class="stat-label">ملفات طوارئ</span>
+            <strong id="emergencyCount">0</strong>
+            <small>فيها حساسية أو حالة مهمة</small>
+          </article>
+          <article class="stat-card accent-amber">
+            <span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 8v5M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></svg></span>
+            <span class="stat-label">تحتاج استكمال</span>
+            <strong id="incompleteCount">0</strong>
+            <small>بدون فصيلة دم أو حساسية</small>
+          </article>
+        </div>
+
+        <section class="panel analytics-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">تحليل البيانات</p>
+              <h3>نظرة على ملفات السوار</h3>
+              <p>أرقام ومخططات تتحدّث تلقائيًا مع كل ملف تضيفه أو تعدله.</p>
+            </div>
+            <span class="auto-chip"><i aria-hidden="true"></i> تحديث تلقائي</span>
+          </div>
+          <div class="analytics-grid">
+            <article class="chart-card">
+              <header><div><h4>فصائل الدم</h4><span id="bloodSummary">—</span></div><span class="chart-tag">حيوي</span></header>
+              <div class="donut-wrap">
+                <div class="donut" id="bloodDonut"><span class="donut-hole"><b id="bloodTotal">0</b><small>ملف</small></span></div>
+                <div class="legend" id="bloodLegend"></div>
+              </div>
+            </article>
+            <article class="chart-card">
+              <header><div><h4>أنواع الحالات</h4><span id="casesSummary">—</span></div><span class="chart-tag">توزيع</span></header>
+              <div class="bar-chart" id="casesChart"></div>
+            </article>
+            <article class="chart-card">
+              <header><div><h4>الفئات العمرية</h4><span id="agesSummary">—</span></div><span class="chart-tag">أعمار</span></header>
+              <div class="age-chart" id="agesChart"></div>
+            </article>
+          </div>
+        </section>
+
+        <div class="section-heading" id="profilesSection">
+          <div><p class="eyebrow">الإدارة</p><h2>ملفات السوار</h2></div>
+          <button class="button primary" id="newProfileBtn" type="button">＋ إضافة ملف جديد</button>
+        </div>
+
+        <section class="panel profiles-panel">
+          <div class="panel-head">
+            <div><h3>قائمة الملفات</h3><p>اضغط على ملف لمعاينة بطاقة السوار أو تعديله.</p></div>
+            <label class="search-field"><span aria-hidden="true">⌕</span><input id="searchInput" class="search" placeholder="ابحث بالاسم..." aria-label="ابحث بالاسم"></label>
+          </div>
+          <div id="profilesList" class="profiles-list"></div>
+          <div id="emptyState" class="empty-state"><div class="empty-icon">▤</div><h3>لسه مفيش ملفات</h3><p>أضف أول ملف، وهتظهر بطاقة السوار والإحصائيات هنا.</p><button class="button primary" id="emptyCreateBtn" type="button">إنشاء أول ملف</button></div>
+        </section>
+      </div>
+
+      <section id="loginPanel" class="login-panel hidden" aria-labelledby="loginTitle">
+        <div class="login-visual" aria-hidden="true">
+          <span class="login-orbit orbit-one"></span><span class="login-orbit orbit-two"></span>
+          <span class="login-mark"><svg viewBox="0 0 48 48" focusable="false"><path d="M24 3 6 10v12c0 11.1 7.5 19 18 23 10.5-4 18-11.9 18-23V10L24 3Z"/><path class="login-mark-cross" d="M20 12h8v8h8v8h-8v8h-8v-8h-8v-8h8z"/></svg></span>
+          <p class="eyebrow">ISEF · MEDICAL QR</p>
+          <h3>مركز إدارة<br>ملفات السوار</h3>
+          <span class="login-visual-caption">بيانات الطوارئ في مكان واحد</span>
+        </div>
+        <div class="login-content">
+          <p class="eyebrow">CONTROL CENTER</p>
+          <h2 id="loginTitle">تسجيل الدخول</h2>
+          <p class="field-note">سجّل دخولك لإدارة ملفات السوار وإصدار بطاقات الـQR.</p>
+          <form id="loginForm" class="login-form">
+            <label>اسم المستخدم<input id="adminUsername" name="username" autocomplete="username" placeholder="اكتب اسم المستخدم" required></label>
+            <label>كلمة المرور<input id="adminPassword" name="password" type="password" autocomplete="current-password" placeholder="اكتب كلمة المرور" required></label>
+            <button class="button primary" type="submit"><span>دخول إلى لوحة الإدارة</span><span aria-hidden="true">←</span></button>
+          </form>
+          <p class="login-secure-note"><span aria-hidden="true">◆</span> اتصال آمن · لا تشارك بيانات الدخول</p>
+          <p id="loginMessage" class="form-message" role="status"></p>
+        </div>
+      </section>
+    </section>
+
+    <section id="editorView" class="hidden">
+      <div class="page-title"><button class="button ghost" id="backBtn" type="button">← رجوع</button><div><p class="eyebrow">إدارة الملف</p><h1 id="editorTitle">إضافة ملف جديد</h1></div></div>
+      <form id="profileForm" class="panel form-panel">
+        <input type="hidden" id="profileId">
+        <div class="form-section"><h3>بيانات أساسية</h3><div class="form-grid">
+          <label>الاسم الكامل *<input id="fullName" required maxlength="100" placeholder="الاسم كما تريد ظهوره"></label>
+          <label>السن<input id="age" type="number" min="0" max="125" placeholder="مثال: 16"></label>
+          <label>فصيلة الدم <select id="bloodType"><option value="">غير معروف</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></label>
+          <label>نوع الحالة <select id="caseType"><option>عام</option><option>طفل</option><option>أصم</option><option>مريض زهايمر</option><option>مريض سكري</option><option>مريض توحد</option><option>طفل معرض للتوهان</option><option>كبير سن</option><option>حساسية شديدة</option><option>مرض مزمن</option><option>حالة معرضة لفقدان الوعي</option><option>أخرى</option></select></label>
+        </div></div>
+        <div class="form-section"><h3>جهة اتصال الطوارئ</h3><div class="form-grid">
+          <label>اسم جهة الاتصال<input id="contactName" maxlength="100" placeholder="ولي أمر / قريب"></label>
+          <label>رقم الهاتف *<input id="contactPhone" type="tel" required maxlength="30" placeholder="+20 1xxxxxxxxx"></label>
+          <label>العلاقة<input id="contactRelation" maxlength="60" placeholder="مثال: الأم"></label>
+          <label>لغة التواصل<select id="language"><option value="ar">العربية</option><option value="en">English</option><option value="sign">لغة الإشارة</option></select></label>
+        </div></div>
+        <div class="form-section"><h3>معلومات طبية للطوارئ</h3><p class="field-note">اكتب أقل قدر لازم من المعلومات. تجنب التفاصيل غير الضرورية.</p><div class="form-grid">
+          <label class="full">الحساسية المهمة<input id="allergies" maxlength="300" placeholder="مثال: حساسية شديدة من البنسلين، أو لا توجد حساسية معروفة"></label>
+          <label class="full">أمراض أو حالات مهمة للطوارئ<input id="conditions" maxlength="400" placeholder="معلومات مختصرة ومؤكدة"></label>
+          <label class="full">تعليمات مختصرة للمُسعف<textarea id="instructions" maxlength="400" rows="3" placeholder="مثال: يرجى التواصل مع جهة الطوارئ المذكورة"></textarea></label>
+        </div></div>
+        <div class="form-section"><h3>التأمين الصحي (اختياري)</h3><div class="form-grid">
+          <label>اسم جهة التأمين<input id="insuranceName" maxlength="120" placeholder="اسم الجهة"></label>
+          <label>رقم التواصل العام<input id="insurancePhone" type="tel" maxlength="30" placeholder="رقم خدمة العملاء"></label>
+          <label class="full">عنوان الفرع أو الجهة<input id="insuranceAddress" maxlength="250" placeholder="العنوان أو أقرب فرع"></label>
+        </div></div>
+        <div class="form-section sensitive-section"><h3>تفاصيل إضافية خاصة</h3><p class="field-note">هذه الحقول لا تظهر في صفحة QR العامة. استخدم بيانات وهمية فقط.</p><div class="form-grid">
+          <label class="full">تفاصيل طبية إضافية<textarea id="privateNotes" rows="3" maxlength="1000" placeholder="للتجربة ببيانات وهمية فقط"></textarea></label>
+          <label class="full check-label"><input id="activeProfile" type="checkbox" checked> تفعيل صفحة الطوارئ لهذا الملف</label>
+        </div></div>
+        <div class="form-actions"><button type="button" class="button ghost" id="cancelBtn">إلغاء</button><button type="submit" class="button primary">حفظ الملف</button></div>
+        <p id="formMessage" class="form-message" role="status"></p>
+      </form>
+    </section>
+
+    <section id="detailView" class="hidden">
+      <div class="page-title"><button class="button ghost" id="detailBackBtn" type="button">← لوحة الإدارة</button><div><p class="eyebrow">معاينة الملف</p><h1>السوار وصفحة الطوارئ</h1></div></div>
+      <div class="detail-grid">
+        <section class="panel detail-profile-panel">
+          <p class="eyebrow detail-kicker">ملف السوار</p>
+          <div class="panel-head"><div><h3 id="detailName">اسم الشخص</h3><p id="detailMeta"></p></div><span class="status-pill" id="detailStatus">نشط</span></div>
+          <div class="detail-actions"><button class="button primary" id="openPublicBtn" type="button">عرض صفحة الطوارئ</button><button class="button secondary" id="editProfileBtn" type="button">تعديل البيانات</button><button class="button danger-outline" id="deleteProfileBtn" type="button">حذف الملف</button></div>
+          <div class="tag-area">
+            <div class="tag-preview" id="tagPreview">
+              <div class="tag-brand"><span class="tag-cross">+</span><span>MEDICAL <b>QR</b></span><em>ISEF</em></div>
+              <div class="tag-body">
+                <div id="qrcode" class="qr-box"></div>
+                <div class="tag-info">
+                  <strong id="tagName">اسم الشخص</strong>
+                  <span class="tag-blood" id="tagBlood">—</span>
+                  <span class="tag-hint">امسح الكود لمعلومات الطوارئ</span>
+                </div>
+              </div>
+            </div>
+            <div class="tag-copy">
+              <h4>بطاقة السوار</h4>
+              <p class="field-note">دي البطاقة اللي بتتحط على السوار السيليكون. نزّل QR لوحده، أو اطبع البطاقة كاملة بمقاس فعلي 45×30 مم.</p>
+              <div class="qr-actions"><button class="button primary" id="quickDownloadQrBtn" type="button">تنزيل QR</button><button class="button secondary" id="downloadQrBtn" type="button">طباعة بطاقة السوار</button></div>
+              <p id="qrUrl" class="url-text"></p>
+            </div>
+          </div>
+        </section>
+        <section class="panel detail-summary-panel">
+          <div class="summary-heading"><span class="summary-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 13h8M9 17h8"/></svg></span><div><h3>ملخص البيانات</h3><p>المعلومات المسجلة في الملف</p></div></div>
+          <div id="detailSummary" class="summary-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>© 2026 MEDICAL QR</span>
+      <span>ISEF · السوار الطبي الذكي</span>
+      <span>Designed by Eng. Adam Mohamed</span>
+    </footer>
   </main>
 </body>
 </html>
